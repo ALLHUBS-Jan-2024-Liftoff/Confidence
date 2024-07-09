@@ -1,0 +1,69 @@
+/* Responsive styles for EventDetails component */
+
+/* Adjust card columns on medium screens */
+@media (min-width: 768px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+/* Ensure cards stack vertically on extra small screens */
+@media (max-width: 576px) {
+    .card-columns {
+        column-count: 1;
+    }
+}
+
+/* Add space between cards */
+.card {
+    margin-bottom: 20px;
+}
+
+/* Style for card image */
+.card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensure images maintain aspect ratio and cover the entire space */
+    max-width: 100%; /* Ensure image does not exceed the width of its container */
+    max-height: 300px; /* Set a maximum height to control image size */
+}
+
+/* Style for card body */
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Style for card title */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+/* Style for card text */
+.card-text {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Style for card headers (Date, Time, Location, etc.) */
+.card-header {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+/* Alert styles */
+.alert {
+    margin-bottom: 15px;
+}
+
+/* Additional styles for headings */
+h1 {
+    text-align: center; /* Center align the heading */
+    color: blue; /* Set the color of the heading to blue */
+    margin-bottom: 20px; /* Add some bottom margin for spacing */
+    font-size: 2.5rem; /* Adjust font size as needed */
+    font-weight: bold; /* Ensure the heading is bold */
+    text-transform: uppercase; /* Optionally transform text to uppercase */
+}
