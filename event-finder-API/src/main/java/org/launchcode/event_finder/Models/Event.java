@@ -1,9 +1,6 @@
 package org.launchcode.event_finder.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 
 import javax.validation.constraints.NotBlank;
@@ -46,7 +43,7 @@ public class Event {
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
 
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 

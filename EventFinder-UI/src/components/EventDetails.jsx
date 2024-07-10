@@ -138,18 +138,6 @@ const EventDetails = () => {
 
     };
 
-/*
-const base64ToImageUrl = (base64String) => {
-    try {
-        const mimeType = 'image/jpeg'; // Ensure this matches the MIME type of your image
-        const imageUrl = `data:${mimeType};base64,${base64String}`;
-        console.log('Image URL:', imageUrl); // Log the constructed URL
-        return imageUrl;
-    } catch (error) {
-        console.error('Error constructing image URL:', error);
-        throw error; // Handle error case
-    }
-};*/
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
@@ -229,11 +217,6 @@ const base64ToImageUrl = (base64String) => {
                                         className='card-img-top'
                                         alt={event.eventName}
                                     />
-                                     {/* <img
-                                        src={`http://localhost:8080/api/events/${event.id}/image`}
-                                        className='card-img-top'
-                                        alt={event.eventName}
-                                    /> */}
                                     <div className='card-body'>
                                         <h5 className='card-title'>{event.eventName}</h5>
                                         <p className='card-text'><strong>Date:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
@@ -242,7 +225,7 @@ const base64ToImageUrl = (base64String) => {
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
-                                        {/* Additional details like MIME Type can be displayed here */}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +235,7 @@ const base64ToImageUrl = (base64String) => {
 
                     <div className='mt-3'>
                         <button className='btn btn-secondary me-2' onClick={clearFilters}>Clear Filters</button>
-                        {/* Filter components can be added here */}
+            
                     </div>
                 </div>
             </div>
