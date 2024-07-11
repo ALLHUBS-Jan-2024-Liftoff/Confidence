@@ -17,6 +17,10 @@ const EventDetails = () => {
         maxPrice: ''
     });
 
+    // const [favorites, setFavorites] = useState([]); // State to manage favorite events
+    // const [cart, setCart] = useState([]); // State to manage cart items
+
+
     // Fetch data from API on initial component mount
     useEffect(() => {
         fetchData();
@@ -138,6 +142,38 @@ const EventDetails = () => {
 
     };
 
+    //  // Function to handle event approval
+    //  const handleApproveEvent = (eventId) => {
+    //     axios.put(`http://localhost:8080/api/events/${eventId}/approve`)
+    //         .then(res => {
+    //             // Update event in state to reflect approval status
+    //             const updatedData = data.map(event => {
+    //                 if (event.id === eventId) {
+    //                     return { ...event, approved: true }; // Update the approved status
+    //                 }
+    //                 return event;
+    //             });
+    //             setData(updatedData); // Update data state with the updated event
+    //             setFilteredData(updatedData); // Update filteredData state with the updated event
+    //         })
+    //         .catch(err => {
+    //             console.error('Error approving event:', err);// Handle error
+    //         });
+    // };
+
+    // // Function to handle adding an event to favorites
+    // const addToFavorites = (eventId) => {
+    //     if (!favorites.includes(eventId)) {
+    //         setFavorites([...favorites, eventId]);
+    //     }
+    // };
+
+    // // Function to handle adding an event to cart
+    // const addToCart = (eventId) => {
+    //     if (!cart.includes(eventId)) {
+    //         setCart([...cart, eventId]);
+    //     }
+    // };
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
@@ -225,7 +261,10 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
-                                        
+                                        {/* Display approval status */}
+                                        {/*<p className='text-success'><strong>Approved: Yes</strong></p> */}
+                                        {/* <button className='btn btn-primary me-2' onClick={() => addToFavorites(event.id)}>Add to Favorites</button>
+                                        <button className='btn btn-success' onClick={() => addToCart(event.id)}>Add to Cart</button> */}
                                     </div>
                                 </div>
                             </div>

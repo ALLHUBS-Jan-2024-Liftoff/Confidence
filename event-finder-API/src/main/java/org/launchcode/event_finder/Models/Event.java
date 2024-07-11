@@ -47,6 +47,7 @@ public class Event {
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
+    private boolean approved;
     public Event(){}
 
 //    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
@@ -143,5 +144,13 @@ public class Event {
 
     public void setImageMimeType(String imageMimeType) {
         this.imageMimeType = imageMimeType;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 }
