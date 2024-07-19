@@ -1,9 +1,5 @@
 package org.launchcode.event_finder.Controllers;
 
-
-
-
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -14,8 +10,11 @@ import org.launchcode.event_finder.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -23,6 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AuthenticationController {
 
     @Autowired
@@ -110,5 +111,21 @@ public class AuthenticationController {
     public ResponseEntity<?> logout(HttpServletRequest request) {
         request.getSession().invalidate();
         return ResponseEntity.ok("Logout successful");
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<?> checkAuthentication(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = getUserFromSession(session);
+
+        Map<String, Object> response = new HashMap<>();
+        if (user != null) {
+            response.put("isAuthenticated", true);
+            response.put("isAdmin", user.getId() == 1); // Check if user is admin
+        } else {
+            response.put("isAuthenticated", false);
+            response.put("isAdmin", false);
+        }
+        return ResponseEntity.ok(response);
     }
 }

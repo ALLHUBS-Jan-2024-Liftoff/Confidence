@@ -1,26 +1,27 @@
-
 package org.launchcode.event_finder;
-
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
 public class WebApplicationConfig implements WebMvcConfigurer {
 
-    // Create spring-managed object to allow the app to access our filter
     @Bean
     public AuthenticationFilter authenticationFilter() {
         return new AuthenticationFilter();
     }
 
-    // Register the filter with the Spring container
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor( authenticationFilter() );
+        registry.addInterceptor(authenticationFilter());
     }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -29,11 +30,11 @@ public class WebApplicationConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("classpath:/src/main/resources/images/") // Location of your images folder
-                .setCachePeriod(0); //disable caching for development
+                .addResourceLocations("classpath:/src/main/resources/images/")
+                .setCachePeriod(0);
     }
-
 }
