@@ -98,16 +98,14 @@ class AdminDashboard extends Component {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Approval Status</th>
+                  <th>Event Name</th>
                   <th>Description</th>
                   <th>Event Category</th>
                   <th>Event Date</th>
-                  <th>Event Image</th>
-                  <th>Event Location</th>
-                  <th>Event Name</th>
-                  <th>Event Price</th>
                   <th>Event Time</th>
-                  <th>Image MIME Type</th>
+                  <th>Event Location</th>
+                  <th>Event Price</th>
+                  <th>Approval Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -115,16 +113,14 @@ class AdminDashboard extends Component {
                 {filteredEvents.map(event => (
                   <tr key={event.id}>
                     <td>{event.id}</td>
-                    <td>{event.approvalStatus}</td>
+                    <td>{event.eventName}</td>
                     <td>{event.description}</td>
                     <td>{event.eventCategory}</td>
-                    <td>{new Date(event.eventDate).toLocaleString()}</td>
-                    <td><img src={`data:${event.image_mime_type};base64,${event.event_image}`} alt={event.event_name} /></td>
-                    <td>{event.eventLocation}</td>
-                    <td>{event.eventName}</td>
-                    <td>{event.eventPrice}</td>
+                    <td>{event.eventDate}</td>
                     <td>{event.eventTime}</td>
-                    <td>{event.imageMimeType}</td>
+                    <td>{event.eventLocation}</td>
+                    <td>{event.eventPrice}</td>
+                    <td>{event.approvalStatus}</td>
                     <td><button onClick={() => this.toggleEditPopup(event)}>Edit</button></td>
                   </tr>
                 ))}
@@ -143,12 +139,8 @@ class AdminDashboard extends Component {
                 <form>
                   <label>ID: {editEvent.id}</label><br />
                   <label>
-                    Approval Status:
-                    <select name="approvalStatus" value={editEvent.approvalStatus} onChange={this.handleInputChange}>
-                      <option value="Approved">Approved</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Rejected">Rejected</option>
-                    </select>
+                    Event Name:
+                    <input type="text" name="eventName" value={editEvent.eventName} onChange={this.handleInputChange} />
                   </label><br />
                   <label>
                     Description:
@@ -163,24 +155,24 @@ class AdminDashboard extends Component {
                     <input type="datetime-local" name="eventDate" value={new Date(editEvent.eventDate).toLocaleDateString()} onChange={this.handleInputChange} />
                   </label><br />
                   <label>
-                    Event Location:
-                    <input type="text" name="eventLocation" value={editEvent.eventLocation} onChange={this.handleInputChange} />
+                    Event Time:
+                    <input type="time" name="eventTime" value={this.formatTime(editEvent.eventTime)} onChange={this.handleInputChange} />
                   </label><br />
                   <label>
-                    Event Name:
-                    <input type="text" name="eventName" value={editEvent.eventName} onChange={this.handleInputChange} />
+                    Event Location:
+                    <input type="text" name="eventLocation" value={editEvent.eventLocation} onChange={this.handleInputChange} />
                   </label><br />
                   <label>
                     Event Price:
                     <input type="number" name="eventPrice" value={editEvent.eventPrice} onChange={this.handleInputChange} />
                   </label><br />
                   <label>
-                    Event Time:
-                    <input type="time" name="eventTime" value={this.formatTime(editEvent.eventTime)} onChange={this.handleInputChange} />
-                  </label><br />
-                  <label>
-                    Image MIME Type:
-                    <input type="text" name="image_mime_type" value={editEvent.image_mime_type} onChange={this.handleInputChange} />
+                    Approval Status:
+                    <select name="approvalStatus" value={editEvent.approvalStatus} onChange={this.handleInputChange}>
+                      <option value="Approved">Approved</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Rejected">Rejected</option>
+                    </select>
                   </label><br />
                   <button type="button" onClick={this.saveChanges}>Save</button>
                   <button type="button" onClick={this.toggleEditPopup}>Cancel</button>
