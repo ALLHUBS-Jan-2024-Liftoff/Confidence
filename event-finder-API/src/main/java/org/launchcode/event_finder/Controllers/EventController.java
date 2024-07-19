@@ -22,7 +22,7 @@ public class EventController {
     // Get all events
     @GetMapping
     public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+        return eventRepository.findAll( );
     }
 
 
@@ -36,16 +36,17 @@ public class EventController {
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
-        if (eventOptional.isPresent()) {
-            return ResponseEntity.ok(eventOptional.get());
+        if (eventOptional.isPresent( )) {
+            return ResponseEntity.ok(eventOptional.get( ));
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound( ).build( );
         }
     }
+}
 
 
 // /api/events/search?name=YourEventName
 // /api/events
 // /api/events/{eventId}
 
-}
+

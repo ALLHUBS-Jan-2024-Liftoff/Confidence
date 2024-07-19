@@ -28,7 +28,7 @@ public class Event {
     private String eventLocation;
 
     @NotBlank(message = "Please provide Event Description.")
-    @Size(min=5, message = "Description must be at least 5 characters.")
+    @Size(min = 5, message = "Description must be at least 5 characters.")
     private String description;
 
     @NotBlank
@@ -36,7 +36,6 @@ public class Event {
 
     @NotNull
     private double eventPrice;
-
 
 
     // Large Object Byte for storing binary data like images in database.
@@ -48,7 +47,8 @@ public class Event {
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
 
-    public Event(){}
+    public Event() {
+    }
 
 
     public Long getId() {
@@ -111,13 +111,6 @@ public class Event {
         this.eventPrice = eventPrice;
     }
 
-//    public byte[] getEventImage() {
-//        return eventImage;
-//    }
-//
-//    public void setEventImage(byte[] eventImage) {
-//        this.eventImage = eventImage;
-//    }
 
     public String getEventImage() {
         return eventImage;
@@ -134,6 +127,5 @@ public class Event {
     public void setImageMimeType(String imageMimeType) {
         this.imageMimeType = imageMimeType;
     }
-
 
 }

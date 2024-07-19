@@ -25,3 +25,4 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .setCachePeriod(0); //disable caching for development
     }
 }
+
