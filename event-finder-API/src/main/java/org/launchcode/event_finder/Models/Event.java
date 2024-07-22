@@ -46,6 +46,8 @@ public class Event {
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
+    public String approvalStatus = "Pending";
+
 
     public Event() {
     }
