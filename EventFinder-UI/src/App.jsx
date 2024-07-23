@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import AdminDashboard from './components/AdminDashboard'
+import EventDetails from './components/EventDetails'
 
 
 function App() {
@@ -9,10 +10,12 @@ function App() {
   return (
     <>
       <div>
-        <AdminDashboard/>
+        <EventDetails/>
       </div>
       
     </>
   )
 }
+
 export default App
+

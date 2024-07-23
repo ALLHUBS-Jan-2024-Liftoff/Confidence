@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 
 import javax.validation.constraints.NotBlank;
@@ -51,7 +52,7 @@ public class Event {
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
 
-    private String approvalStatus;
+    private String approvalStatus="pending";
     public Event(){}
 
 //    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
@@ -65,6 +66,12 @@ public class Event {
 //        this.eventImage = eventImage;
 //        this.imageMimeType = imageMimeType;
 //    }
+  
+
+    //public String approvalStatus = "Pending";
+
+
+
 
     public Long getId() {
         return id;
@@ -126,13 +133,6 @@ public class Event {
         this.eventPrice = eventPrice;
     }
 
-//    public byte[] getEventImage() {
-//        return eventImage;
-//    }
-//
-//    public void setEventImage(byte[] eventImage) {
-//        this.eventImage = eventImage;
-//    }
 
     public String getEventImage() {
         return eventImage;
