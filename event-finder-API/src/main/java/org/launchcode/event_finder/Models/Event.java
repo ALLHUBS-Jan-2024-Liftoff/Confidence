@@ -47,7 +47,9 @@ public class Event {
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
 
-    @Lob
+
+
+    @Column(columnDefinition = "LONGTEXT")
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
