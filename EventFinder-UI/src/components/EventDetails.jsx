@@ -17,10 +17,6 @@ const EventDetails = () => {
         maxPrice: ''
     });
 
-    // const [favorites, setFavorites] = useState([]); // State to manage favorite events
-    // const [cart, setCart] = useState([]); // State to manage cart items
-
-
     // Fetch data from API on initial component mount
     useEffect(() => {
         fetchData();
@@ -142,38 +138,18 @@ const EventDetails = () => {
 
     };
 
-    //  // Function to handle event approval
-    //  const handleApproveEvent = (eventId) => {
-    //     axios.put(`http://localhost:8080/api/events/${eventId}/approve`)
-    //         .then(res => {
-    //             // Update event in state to reflect approval status
-    //             const updatedData = data.map(event => {
-    //                 if (event.id === eventId) {
-    //                     return { ...event, approved: true }; // Update the approved status
-    //                 }
-    //                 return event;
-    //             });
-    //             setData(updatedData); // Update data state with the updated event
-    //             setFilteredData(updatedData); // Update filteredData state with the updated event
-    //         })
-    //         .catch(err => {
-    //             console.error('Error approving event:', err);// Handle error
-    //         });
-    // };
-
-    // // Function to handle adding an event to favorites
-    // const addToFavorites = (eventId) => {
-    //     if (!favorites.includes(eventId)) {
-    //         setFavorites([...favorites, eventId]);
-    //     }
-    // };
-
-    // // Function to handle adding an event to cart
-    // const addToCart = (eventId) => {
-    //     if (!cart.includes(eventId)) {
-    //         setCart([...cart, eventId]);
-    //     }
-    // };
+/*
+const base64ToImageUrl = (base64String) => {
+    try {
+        const mimeType = 'image/jpeg'; // Ensure this matches the MIME type of your image
+        const imageUrl = `data:${mimeType};base64,${base64String}`;
+        console.log('Image URL:', imageUrl); // Log the constructed URL
+        return imageUrl;
+    } catch (error) {
+        console.error('Error constructing image URL:', error);
+        throw error; // Handle error case
+    }
+};*/
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
@@ -253,6 +229,11 @@ const EventDetails = () => {
                                         className='card-img-top'
                                         alt={event.eventName}
                                     />
+                                     {/* <img
+                                        src={`http://localhost:8080/api/events/${event.id}/image`}
+                                        className='card-img-top'
+                                        alt={event.eventName}
+                                    /> */}
                                     <div className='card-body'>
                                         <h5 className='card-title'>{event.eventName}</h5>
                                         <p className='card-text'><strong>Date:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
@@ -261,10 +242,7 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
-                                        {/* Display approval status */}
-                                        {/*<p className='text-success'><strong>Approved: Yes</strong></p> */}
-                                        {/* <button className='btn btn-primary me-2' onClick={() => addToFavorites(event.id)}>Add to Favorites</button>
-                                        <button className='btn btn-success' onClick={() => addToCart(event.id)}>Add to Cart</button> */}
+                                        {/* Additional details like MIME Type can be displayed here */}
                                     </div>
                                 </div>
                             </div>
@@ -274,7 +252,7 @@ const EventDetails = () => {
 
                     <div className='mt-3'>
                         <button className='btn btn-secondary me-2' onClick={clearFilters}>Clear Filters</button>
-
+                        {/* Filter components can be added here */}
                     </div>
                 </div>
             </div>

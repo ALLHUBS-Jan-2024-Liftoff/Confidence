@@ -1,61 +1,49 @@
 package org.launchcode.event_finder.Models;
 
+import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import org.antlr.v4.runtime.misc.NotNull;
-
-
-import java.util.Objects;
-
-
+import javax.validation.constraints.NotBlank;
 
 @Entity
-public class User {
-    @Id
-    @GeneratedValue
-    private int id;
-    @NotNull
+@Table(name = "users")
+public class User extends AbstractEntity {
+
+    @NotBlank
     private String username;
 
-    @NotNull
-    private String pwHash;
-
-    public int getId() {
-        return id;
-    }
+    @NotBlank
+    private String password;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User() {
-    }
+    public User() {}
 
     public User(String username, String password) {
         this.username = username;
-        this.pwHash = encoder.encode(password);
+        this.password = encoder.encode(password);
     }
-
 
     public String getUsername() {
         return username;
     }
 
-    public boolean isMatchingPassword(String password) {
-        return encoder.matches(password, pwHash);
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User entity = (User) o;
-        return id == entity.id;
 
+    public boolean isMatch(String password) {
+        return encoder.matches(password, this.password); // Check if password matches the hashed password in the database (using BCrypt password);
     }
-    @Override
-    public int hashCode () {
-        return Objects.hash(id);
+
+    public String getPassword() {
+        return password;
     }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 }

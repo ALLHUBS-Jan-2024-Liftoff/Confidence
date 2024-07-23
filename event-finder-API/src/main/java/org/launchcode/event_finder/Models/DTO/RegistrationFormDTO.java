@@ -1,7 +1,6 @@
-package org.launchcode.event_finder.Models.dto;
+package org.launchcode.event_finder.Models.DTO;
 
-
-public class RegisterFormDTO extends LoginFormDTO {
+public class RegistrationFormDTO extends LoginFormDTO {
 
     private String verifyPassword;
 

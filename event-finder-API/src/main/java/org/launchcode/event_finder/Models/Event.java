@@ -1,10 +1,6 @@
 package org.launchcode.event_finder.Models;
 
-
-
-
 import jakarta.persistence.*;
-
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,6 +10,7 @@ import java.util.Date;
 
 @Entity
 public class Event {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -46,11 +43,11 @@ public class Event {
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
 
+    //@Size(max = 1048576)
     @Column(columnDefinition = "LONGTEXT")
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
-    private boolean approved;
     public Event(){}
 
 //    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
@@ -147,13 +144,5 @@ public class Event {
 
     public void setImageMimeType(String imageMimeType) {
         this.imageMimeType = imageMimeType;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
     }
 }
