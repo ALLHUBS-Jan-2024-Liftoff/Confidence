@@ -3,9 +3,10 @@ package org.launchcode.event_finder.Controllers;
 import org.launchcode.event_finder.Models.DTO.LoginFormDTO;
 import org.launchcode.event_finder.Models.DTO.RegistrationFormDTO;
 import org.launchcode.event_finder.Models.User;
-import org.launchcode.event_finder.Repositories.UserRepository;
+
 import jakarta.servlet.http.HttpSession;
 
+import org.launchcode.event_finder.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
