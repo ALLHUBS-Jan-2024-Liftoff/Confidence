@@ -98,8 +98,8 @@ const RegistrationForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8080/register', form);
-      setMessage('User registered successfully');
-      login(response.data);
+      setMessage('User registered successfully. Please log in.');
+      //login(response.data);
       navigate('/login'); // Navigate to login page after successful registration
     } catch (error) {
       if (error.response) {

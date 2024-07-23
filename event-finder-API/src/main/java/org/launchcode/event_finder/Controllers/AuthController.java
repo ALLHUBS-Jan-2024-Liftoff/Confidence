@@ -60,7 +60,7 @@ public class AuthController {
         userRepository.save(user);
 
         // Set user in session
-        //session.setAttribute("user", user);
+        session.setAttribute("user", user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
