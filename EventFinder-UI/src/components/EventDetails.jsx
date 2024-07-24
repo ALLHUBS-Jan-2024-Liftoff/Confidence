@@ -27,6 +27,7 @@ const EventDetails = () => {
         axios.get('http://localhost:8080/api/events')
             .then(res => {
                 console.log('Fetched data:', res.data); // Log the fetched data
+
                 // Set approvalStatus to 'pending' for each event
                 const eventsWithPendingApproval = res.data.map(event => ({
                     ...event,
@@ -34,6 +35,7 @@ const EventDetails = () => {
                 }));
                 setData(eventsWithPendingApproval); // Set fetched data to state with pending approvalStatus
                 setFilteredData(eventsWithPendingApproval); // Initially set filteredData to all data
+
             })
             .catch(err => {
                 console.error('Error fetching data:', err);
@@ -128,6 +130,7 @@ const EventDetails = () => {
         }
     };
 
+
     // Function to convert base64 image string to URL
     const base64ToImageUrl = (base64String, mimeType) => {
         if (!base64String) return ''; // Handle case where base64String is not available
@@ -150,6 +153,7 @@ const EventDetails = () => {
                 // Handle error if needed
             });
     };
+
 
     return (
         <div className='container py-5'>
@@ -220,14 +224,18 @@ const EventDetails = () => {
                     </div>
 
                     <div className='row row-cols-1 row-cols-md-2 g-4'>
+
                         {filteredData.map((event, index) => (
                             <div key={index} className='col'>
+
                                 <div className='card'>
                                     <img
                                         src={base64ToImageUrl(event.eventImage, event.imageMimeType)}
                                         className='card-img-top'
                                         alt={event.eventName}
                                     />
+
+
                                     <div className='card-body'>
                                         <h5 className='card-title'>{event.eventName}</h5>
                                         <p className='card-text'><strong>Date:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
@@ -236,16 +244,19 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
+
                                         <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
                                         <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
                                     </div>
                                 </div>
                             </div>
                         ))}
+
                     </div>
 
                     <div className='mt-3'>
                         <button className='btn btn-secondary me-2' onClick={clearFilters}>Clear Filters</button>
+
                     </div>
                 </div>
             </div>
@@ -253,4 +264,6 @@ const EventDetails = () => {
     );
 };
 
+
 export default EventDetails;
+

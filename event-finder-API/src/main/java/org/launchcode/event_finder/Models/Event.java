@@ -1,10 +1,12 @@
 package org.launchcode.event_finder.Models;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.*;
+
 
 
 import javax.validation.constraints.NotBlank;
@@ -15,6 +17,7 @@ import java.util.Date;
 
 @Entity
 public class Event {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -49,12 +52,16 @@ public class Event {
 
 
 
+
+
     @Column(columnDefinition = "LONGTEXT")
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
 
+
     private String approvalStatus="pending";
+
     public Event(){}
 
 //    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
@@ -68,9 +75,11 @@ public class Event {
 //        this.eventImage = eventImage;
 //        this.imageMimeType = imageMimeType;
 //    }
+
   
 
     //public String approvalStatus = "Pending";
+
 
 
 
@@ -153,6 +162,7 @@ public class Event {
     }
 
 
+
     public String getApprovalStatus() {
         return approvalStatus;
     }
@@ -160,4 +170,5 @@ public class Event {
     public void setApprovalStatus(String approvalStatus) {
         this.approvalStatus = approvalStatus;
     }
+
 }
