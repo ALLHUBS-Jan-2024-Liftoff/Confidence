@@ -1,3 +1,4 @@
+
 // import React, { useEffect, useState } from 'react';
 // import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 // import Register from './components/Register';
@@ -53,6 +54,7 @@
 
 // export default App;
 
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import RegistrationForm from './components/RegistrationForm';
@@ -70,6 +72,7 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
+
     <AuthProvider>
       <BrowserRouter>
         <NavBar />

@@ -1,6 +1,13 @@
 package org.launchcode.event_finder.Models;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.*;
+
+
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -43,10 +50,17 @@ public class Event {
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
 
-    //@Size(max = 1048576)
+
+
+
+
     @Column(columnDefinition = "LONGTEXT")
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
+
+
+
+    private String approvalStatus="pending";
 
     public Event(){}
 
@@ -61,6 +75,14 @@ public class Event {
 //        this.eventImage = eventImage;
 //        this.imageMimeType = imageMimeType;
 //    }
+
+  
+
+    //public String approvalStatus = "Pending";
+
+
+
+
 
     public Long getId() {
         return id;
@@ -122,13 +144,6 @@ public class Event {
         this.eventPrice = eventPrice;
     }
 
-//    public byte[] getEventImage() {
-//        return eventImage;
-//    }
-//
-//    public void setEventImage(byte[] eventImage) {
-//        this.eventImage = eventImage;
-//    }
 
     public String getEventImage() {
         return eventImage;
@@ -145,4 +160,15 @@ public class Event {
     public void setImageMimeType(String imageMimeType) {
         this.imageMimeType = imageMimeType;
     }
+
+
+
+    public String getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
+
 }
