@@ -59,6 +59,18 @@ class AdminDashboard extends Component {
       console.error('Error updating the event:', error);
     }
   };
+  deleteEvent = async (eventId) => {
+    const confirmed = window.confirm('Are you sure you want to delete this event?');
+
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`http://localhost:8080/api/admin/events/${eventId}`);
+      this.fetchData(); // Refresh the event list
+    } catch (error) {
+      console.error('Error deleting the event:', error);
+    }
+  };
   
   formatTime = (timeArray) => {
     try {
@@ -121,7 +133,10 @@ class AdminDashboard extends Component {
                     <td>{event.eventLocation}</td>
                     <td>{event.eventPrice}</td>
                     <td>{event.approvalStatus}</td>
-                    <td><button onClick={() => this.toggleEditPopup(event)}>Edit</button></td>
+                    <td className='actions'>
+                      <button className="button-edit" onClick={() => this.toggleEditPopup(event)}>Edit</button>
+                      <button className="button-delete"onClick={() => this.deleteEvent(event.id)}>Delete</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
