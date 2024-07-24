@@ -1,5 +1,9 @@
 package org.launchcode.event_finder.Models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.*;
 
 
@@ -28,7 +32,7 @@ public class Event {
     private String eventLocation;
 
     @NotBlank(message = "Please provide Event Description.")
-    @Size(min = 5, message = "Description must be at least 5 characters.")
+    @Size(min=5, message = "Description must be at least 5 characters.")
     private String description;
 
     @NotBlank
@@ -38,19 +42,37 @@ public class Event {
     private double eventPrice;
 
 
+
     // Large Object Byte for storing binary data like images in database.
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
+
+
 
     @Column(columnDefinition = "LONGTEXT")
     private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
-    public String approvalStatus = "Pending";
+
+    private String approvalStatus="pending";
+    public Event(){}
+
+//    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
+//        this.eventName = eventName;
+//        this.eventDate = eventDate;
+//        this.eventTime = eventTime;
+//        this.eventLocation = eventLocation;
+//        this.description = description;
+//        this.eventCategory = eventCategory;
+//        this.eventPrice = eventPrice;
+//        this.eventImage = eventImage;
+//        this.imageMimeType = imageMimeType;
+//    }
+  
+
+    //public String approvalStatus = "Pending";
 
 
-    public Event() {
-    }
 
 
     public Long getId() {
@@ -130,4 +152,12 @@ public class Event {
         this.imageMimeType = imageMimeType;
     }
 
+
+    public String getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
 }
