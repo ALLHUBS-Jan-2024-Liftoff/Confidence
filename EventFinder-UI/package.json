@@ -13,10 +13,12 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
+    "react-accessible-accordion": "^5.0.0",
     "react-bootstrap": "^2.10.4",
     "react-devtools": "^5.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "react-select-async-paginate": "^0.7.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
