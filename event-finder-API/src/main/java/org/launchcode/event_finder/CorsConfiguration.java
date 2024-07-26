@@ -1,15 +1,19 @@
 package org.launchcode.event_finder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
 public class CorsConfiguration implements WebMvcConfigurer {
 
+    private final AuthenticationFilter authenticationFilter;
+
+    @Autowired
+    public CorsConfiguration(AuthenticationFilter authenticationFilter) {
+        this.authenticationFilter = authenticationFilter;
+    }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -23,6 +27,13 @@ public class CorsConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/src/main/resources/images/") // Location of your images folder
                 .setCachePeriod(0); //disable caching for development
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authenticationFilter)
+                // Exclude intercepting requests to "/login" and "/register" endpoints
+                .excludePathPatterns("/login", "/register", "/api/events", "/");
     }
 }
 

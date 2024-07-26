@@ -3,26 +3,21 @@ package org.launchcode.event_finder.Controllers;
 import org.launchcode.event_finder.Models.DTO.LoginFormDTO;
 import org.launchcode.event_finder.Models.DTO.RegistrationFormDTO;
 import org.launchcode.event_finder.Models.User;
-
-import jakarta.servlet.http.HttpSession;
-
 import org.launchcode.event_finder.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpSession;
 
+import javax.validation.Valid;
 
 @RestController
 public class AuthController {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
 
     @Autowired
     public AuthController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
@@ -41,15 +36,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody RegistrationFormDTO registrationForm, HttpSession session) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationFormDTO registrationForm) {
         // Check if passwords match
         if (!registrationForm.getPassword().equals(registrationForm.getVerifyPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
         }
 
         // Check if username already exists
         if (userRepository.findByUsername(registrationForm.getUsername()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
         }
 
         // Create new user
@@ -60,14 +55,11 @@ public class AuthController {
         // Save user to database
         userRepository.save(user);
 
-        // Set user in session
-        session.setAttribute("user", user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@Valid @RequestBody LoginFormDTO loginForm, HttpSession session) {
+    public ResponseEntity<String> loginUser(@Valid @RequestBody LoginFormDTO loginForm, HttpSession session) {
         // Find user by username
         User user = userRepository.findByUsername(loginForm.getUsername());
 
@@ -75,9 +67,15 @@ public class AuthController {
         if (user != null && passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
             // Set user in session
             session.setAttribute("user", user);
-            return ResponseEntity.ok(user);
+
+            // Check if user is admin
+            if (user.getId() == 1) { // Assuming admin ID is 1
+                return ResponseEntity.ok("Admin login successful");
+            } else {
+                return ResponseEntity.ok("User login successful");
+            }
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
 
@@ -87,8 +85,6 @@ public class AuthController {
         return ResponseEntity.ok("Logged out successfully");
     }
 }
-
-
 
 
 

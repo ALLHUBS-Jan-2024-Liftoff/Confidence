@@ -3,12 +3,17 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 
 const NavBar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
+
   return (
     <nav>
       <ul>
+        <li><Link to="/">Home</Link></li>
         {user ? (
           <>
+            {isAdmin() && (
+              <li><Link to="/admin">Admin Dashboard</Link></li>
+            )}
             <li><Link to="/protected">Protected</Link></li>
             <li><a href="#logout" onClick={logout}>Logout</a></li>
           </>
