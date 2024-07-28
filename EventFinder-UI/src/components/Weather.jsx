@@ -1,22 +1,15 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/EventDetails.css';
-// import { AsyncPaginate } from 'react-select-async-paginate';
+import '../styles/Weather.css';
 
-// holding place for placeholder Display code
-
-/* <AsyncPaginate
-placeholder="display Saint Louis"
-debounceTimeout={600}
-/> */
-
-const Display = () => {
+const Weather = () => {
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
                 <div className='card-body'>
                     <div className='mb-3'>
-                        <h1 className='text-primary'>Weather Display</h1>
+                        <h1 className='text-primary'>Event Weather</h1>
+                        <script src='../indexWeather.jsx'></script>
                     </div>
                 </div>
             </div>
@@ -24,4 +17,4 @@ const Display = () => {
     );
 };
 
-export default Display;
+export default Weather;
