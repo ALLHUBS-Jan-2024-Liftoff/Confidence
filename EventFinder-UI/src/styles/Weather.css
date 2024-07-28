@@ -1,0 +1,71 @@
+/* Responsive styles for Weather component */
+/* Copied EventDetails to create - if modified, then change EventDetails to Weather, below */
+
+/* Adjust EventDetails card columns on medium screens */
+@media (min-width: 768px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+/* Ensure EventDetails cards stack vertically on extra small screens: commented out because may not use
+@media (max-width: 576px) {
+    .card-columns {
+        column-count: 1;
+    }
+} */
+
+/* Add space between EventDetails cards: commented out because may not use
+.card {
+    margin-bottom: 20px;
+} */
+
+/* Style for EventDetails card image: commented out because may not use
+.card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensure images maintain aspect ratio and cover the entire space */ /*
+    max-width: 100%; /* Ensure image does not exceed the width of its container */ /*
+    max-height: 300px; /* Set a maximum height to control image size */ /*
+} */
+
+/* Style for <Event> weather details by <zip code> card body */
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Style for <Event>: Weather by <Zip Code> card title */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+/* Style for <Event> weather details by <zip code> card text */
+.card-text {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Style for <Event> weather details by <zip code> card headers (Temp, Humidity, Windspeed, etc.) */
+.card-header {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+/* Alert styles */
+.alert {
+    margin-bottom: 15px;
+}
+
+/* h1 style for Weather headings */
+h1 {
+    text-align: center; /* Center align the heading */
+    color: blue; /* Set the color of the heading to blue */
+    margin-bottom: 20px; /* Add some bottom margin for spacing */
+    font-size: 2.5rem; /* Adjust font size as needed */
+    font-weight: bold; /* Ensure the heading is bold */
+    text-transform: uppercase; /* Optionally transform text to uppercase */
+
+}
