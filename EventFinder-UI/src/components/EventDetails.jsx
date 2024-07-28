@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/EventDetails.css';
+import { Link } from 'react-router-dom';
 
 const EventDetails = () => {
     const [data, setData] = useState([]); // State to store fetched event data
@@ -16,7 +17,6 @@ const EventDetails = () => {
         minPrice: '',
         maxPrice: ''
     });
-
 
     // Fetch data from API on initial component mount
     useEffect(() => {
@@ -124,22 +124,13 @@ const EventDetails = () => {
         }
     };
 
-   // Function to convert base64 image string to URL
+    // Function to convert base64 image string to URL
     const base64ToImageUrl = (base64String, mimeType) => {
-     //   return `${base64String}`;
-    if(!base64String) return ''; //Handle case where base64String is not available
-     //console.log('${base64String}');
-      // Construct the data URL
-    const imageUrl = `data:${mimeType};base64,${base64String}`;
-
-    // Log the constructed URL to console
-    console.log('Constructed Image URL:', imageUrl);
-
+        if (!base64String) return ''; // Handle case where base64String is not available
+        // Construct the data URL
         return `data:${mimeType};base64,${base64String}`;
-
     };
 
- 
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
@@ -149,6 +140,10 @@ const EventDetails = () => {
 
                     <div className='mb-3'>
                         <h1 className='text-primary'>Event Finder</h1>
+                        <div className='mb-3'>
+                        <Link to="/about" className="btn btn-primary me-2">About</Link>
+                        <Link to="/contact" className="btn btn-secondary">Contact</Link>
+                    </div>
                         <input
                             type='text'
                             className='form-control'
@@ -209,10 +204,8 @@ const EventDetails = () => {
                     </div>
 
                     <div className='row row-cols-1 row-cols-md-2 g-4'>
-                        {filteredData.map((event, index) => {
-                            console.log('Event image actual value', event.eventImage);
-                            console.log('event image mime type', event.imageMimeType);
-                           return ( <div key={index} className='col'>
+                        {filteredData.map((event, index) => (
+                            <div key={index} className='col'>
                                 <div className='card'>
                                     <img
                                         src={base64ToImageUrl(event.eventImage, event.imageMimeType)}
@@ -227,17 +220,14 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
-                                       
                                     </div>
                                 </div>
                             </div>
-                        );
-                    })}
+                        ))}
                     </div>
 
                     <div className='mt-3'>
                         <button className='btn btn-secondary me-2' onClick={clearFilters}>Clear Filters</button>
-            
                     </div>
                 </div>
             </div>
