@@ -64,6 +64,7 @@ import NavBar from './components/NavBar';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import ProtectedComponent from './components/ProtectedComponent';
 import LoginStatus from './components/LoginStatus';
+import Weather from './components/Weather';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -81,6 +82,7 @@ function App() {
           <Route path="/" element={<EventDetails />} /> {/* Specific route for EventDetails */}
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/weather" element={<Weather />} />
           <Route path="/protected/*" element={<ProtectedRoute><ProtectedComponent /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" />} /> {/* Default fallback route */}
         </Routes>
