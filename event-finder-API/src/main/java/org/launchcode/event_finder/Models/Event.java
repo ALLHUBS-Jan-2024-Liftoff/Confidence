@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Event {
@@ -61,6 +62,9 @@ public class Event {
 
 
     private String approvalStatus="pending";
+
+    @OneToMany(mappedBy = "event")
+    private List<FavoriteEvent> favoriteEvents;
 
     public Event(){}
 

@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/EventDetails.css';
 
+
 const EventDetails = () => {
+    const { user } = useAuth();
+    const { eventId } = useParams();
+    const [event, setEvent] = useState(null);
+    const [isFavorite, setIsFavorite] = useState(false);
     const [data, setData] = useState([]); // State to store fetched event data
     const [filteredData, setFilteredData] = useState([]); // State to store filtered event data
     const [error, setError] = useState(null); // State to handle errors during data fetching
@@ -16,6 +23,19 @@ const EventDetails = () => {
         minPrice: '',
         maxPrice: ''
     });
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            try {
+                const response = await axios.get(`/events/${eventId}`);
+                setEvent(response.data);
+            } catch (error) {
+                console.error("Error fetching event details:", error);
+            }
+        };
+
+        fetchEvent();
+    }, [eventId]);
 
     // Fetch data from API on initial component mount
     useEffect(() => {
@@ -43,6 +63,16 @@ const EventDetails = () => {
             });
     };
 
+    const saveToFavorites = async () => { 
+        if (user && event) {
+            try {
+                await axios.post('/user/favorites', { user: user.id, event: event.id });
+                setIsFavorite(true);
+            } catch (error) {
+                console.error("Error saving to favorites:", error);
+            }
+        }
+    };
     // Effect to apply filters whenever filters state changes
     useEffect(() => {
         applyFilters();
@@ -247,6 +277,9 @@ const EventDetails = () => {
 
                                         <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
                                         <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
+                                        {user && !isFavorite && (
+                                        <button className='btn btn-primary' onClick={saveToFavorites}>Save</button>
+)}
                                     </div>
                                 </div>
                             </div>

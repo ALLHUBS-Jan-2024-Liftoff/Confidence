@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -14,6 +15,9 @@ public class User extends AbstractEntity {
 
     @NotBlank
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<FavoriteEvent> favoriteEvents;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 

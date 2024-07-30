@@ -62,7 +62,7 @@ import LoginForm from './components/LoginForm';
 import EventDetails from './components/EventDetails';
 import NavBar from './components/NavBar';
 import { AuthProvider, useAuth } from './auth/AuthContext';
-import ProtectedComponent from './components/ProtectedComponent';
+import Dashboard from './components/Dashboard';
 import LoginStatus from './components/LoginStatus';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/AdminDashboard';
@@ -82,7 +82,7 @@ function App() {
           <Route path="/" element={<EventDetails />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/protected/*" element={<ProtectedRoute><ProtectedComponent /></ProtectedRoute>} />
+          <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
