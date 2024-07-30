@@ -64,6 +64,8 @@ import NavBar from './components/NavBar';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import ProtectedComponent from './components/ProtectedComponent';
 import LoginStatus from './components/LoginStatus';
+import AdminRoute from './components/AdminRoute';
+import AdminDashboard from './components/AdminDashboard';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -72,17 +74,17 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-
     <AuthProvider>
       <BrowserRouter>
         <NavBar />
-        <LoginStatus /> {/* Add LoginStatus component to display login status */}
+        <LoginStatus />
         <Routes>
-          <Route path="/" element={<EventDetails />} /> {/* Specific route for EventDetails */}
+          <Route path="/" element={<EventDetails />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/protected/*" element={<ProtectedRoute><ProtectedComponent /></ProtectedRoute>} />
-          <Route path="*" element={<Navigate to="/" />} /> {/* Default fallback route */}
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

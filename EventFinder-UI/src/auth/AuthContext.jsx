@@ -8,31 +8,36 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/user');
-        setUser(response.data);
-      } catch (error) {
-        setUser(null);
-      }
-    };
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/user');
+      setUser(response.data);
+    } catch (error) {
+      setUser(null);
+    }
+  };
 
+  useEffect(() => {
     fetchUser();
   }, []);
 
-  const login = (userData) => {
+  const login = async (userData) => {
     setUser(userData);
+    await fetchUser(); // Ensure the context is updated immediately
   };
 
   const logout = async () => {
     await axios.post('http://localhost:8080/logout');
     setUser(null);
   };
-
+  
+  const isAdmin = () => {
+    return user && user.id === 1; 
+  };
+  
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}

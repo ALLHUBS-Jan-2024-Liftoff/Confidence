@@ -51,9 +51,9 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
-import '../styles/LoginForm.css'; // Import CSS file for styling
+import '../styles/LoginForm.css';
 
 axios.defaults.withCredentials = true;
 
@@ -61,7 +61,7 @@ const LoginForm = () => {
   const [form, setForm] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
   const { login } = useAuth();
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -74,7 +74,7 @@ const LoginForm = () => {
       setMessage('Login successful');
       login(response.data); // Update with actual user data
 
-      // Navigate to 'eventDetails' page after successful login
+      // Redirect to the home page after successful login
       navigate('/');
     } catch (error) {
       if (error.response) {
