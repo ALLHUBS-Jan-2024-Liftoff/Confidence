@@ -23,9 +23,11 @@ public class AuthenticationFilter implements HandlerInterceptor {
 
     private static final List<String> whitelist = Arrays.asList("/login", "/register", "/logout", "/css", "/", "/api/events");
 
-    private static boolean isWhitelisted(String path) {
-        for (String pathRoot : whitelist) {
-            if (path.equals(pathRoot) || path.startsWith(pathRoot + "/")) {
+    private boolean isWhitelisted(String requestURI) {
+        // Define your whitelist logic here
+        List<String> whitelist = Arrays.asList("/login", "/register", "/css/", "/js/", "/");
+        for (String path : whitelist) {
+            if (requestURI.startsWith(path)) {
                 return true;
             }
         }
