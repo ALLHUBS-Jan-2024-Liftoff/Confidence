@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Event {
@@ -81,6 +83,8 @@ public class Event {
     //public String approvalStatus = "Pending";
 
 
+    @ManyToMany(mappedBy = "favoriteEvents")
+    private Set<User> usersWhoFavorited = new HashSet<>();
 
 
 

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -16,7 +18,13 @@ public class User extends AbstractEntity {
     private String password;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private Set<Event> favoriteEvents = new HashSet<>();
     public User() {}
 
     public User(String username, String password) {
@@ -45,5 +53,11 @@ public class User extends AbstractEntity {
         this.password = password;
     }
 
+    public Set<Event> getFavoriteEvents() {
+        return favoriteEvents;
+    }
 
+    public void setFavoriteEvents(Set<Event> favoriteEvents) {
+        this.favoriteEvents = favoriteEvents;
+    }
 }
