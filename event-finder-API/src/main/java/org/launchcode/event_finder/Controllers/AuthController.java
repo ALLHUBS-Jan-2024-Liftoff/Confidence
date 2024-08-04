@@ -2,7 +2,11 @@ package org.launchcode.event_finder.Controllers;
 
 import org.launchcode.event_finder.Models.DTO.LoginFormDTO;
 import org.launchcode.event_finder.Models.DTO.RegistrationFormDTO;
+import org.launchcode.event_finder.Models.Event;
+import org.launchcode.event_finder.Models.FavoriteEvent;
 import org.launchcode.event_finder.Models.User;
+import org.launchcode.event_finder.Repositories.EventRepository;
+import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
 import org.launchcode.event_finder.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +17,18 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class AuthController {
     private final UserRepository userRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private FavoriteEventRepository favoriteEventRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -83,6 +95,31 @@ public class AuthController {
     public ResponseEntity<String> logoutUser(HttpSession session) {
         session.invalidate(); // Invalidate session
         return ResponseEntity.ok("Logged out successfully");
+    }
+
+    @PostMapping("/favorites/add")
+    public FavoriteEvent addFavoriteEvent(@RequestParam Integer userId, @RequestParam Long eventId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+        FavoriteEvent favoriteEvent = new FavoriteEvent();
+        favoriteEvent.setUser(user);
+        favoriteEvent.setEvent(event);
+        return favoriteEventRepository.save(favoriteEvent);
+    }
+
+    @DeleteMapping("/favorites/remove")
+    public void removeFavoriteEvent(@RequestParam Integer userId, @RequestParam Long eventId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+        FavoriteEvent favoriteEvent = favoriteEventRepository.findByUserAndEvent(user, event)
+                .orElseThrow(() -> new RuntimeException("Favorite event not found"));
+        favoriteEventRepository.delete(favoriteEvent);
+    }
+
+    @GetMapping("/favorites/{userId}")
+    public List<Event> getFavoriteEvents(@PathVariable Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return favoriteEventRepository.findByUser(user).stream().map(FavoriteEvent::getEvent).collect(Collectors.toList());
     }
 }
 
