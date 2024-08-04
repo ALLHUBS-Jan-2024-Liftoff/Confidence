@@ -83,10 +83,16 @@ public class Event {
     //public String approvalStatus = "Pending";
 
 
-    @ManyToMany(mappedBy = "favoriteEvents")
-    private Set<User> usersWhoFavorited = new HashSet<>();
+//    @ManyToMany(mappedBy = "favoriteEvents")
+//    private Set<User> usersWhoFavorited = new HashSet<>();
 
+   // public Set<User> getUsersWhoFavorited() {
+      //  return usersWhoFavorited;
+  //  }
 
+//    public void setUsersWhoFavorited(Set<User> usersWhoFavorited) {
+//        this.usersWhoFavorited = usersWhoFavorited;
+//    }
 
     public Long getId() {
         return id;

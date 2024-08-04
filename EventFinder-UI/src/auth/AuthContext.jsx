@@ -10,9 +10,10 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/user');
+      const response = await axios.get('http://localhost:8080/user', { withCredentials: true });
       setUser(response.data);
     } catch (error) {
+      console.error('Error fetching user:', error);
       setUser(null);
     }
   };
@@ -30,14 +31,14 @@ export const AuthProvider = ({ children }) => {
     await axios.post('http://localhost:8080/logout');
     setUser(null);
   };
-  
+
   const isAdmin = () => {
     return user && user.id === 1; 
   };
-  
+
   return (
     <AuthContext.Provider value={{ user, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};

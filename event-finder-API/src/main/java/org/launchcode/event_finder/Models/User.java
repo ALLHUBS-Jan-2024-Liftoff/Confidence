@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,18 +19,24 @@ public class User extends AbstractEntity {
     private String password;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_favorites",
+            name = "user_favorite_events",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
-    private Set<Event> favoriteEvents = new HashSet<>();
-    public User() {}
+    private List<Event> favoriteEvents;
+    public User() {
+    }
 
-    public User(String username, String password) {
+
+
+
+    public User(String username, String password ) {
         this.username = username;
         this.password = encoder.encode(password);
+
     }
 
     public String getUsername() {
@@ -49,15 +56,17 @@ public class User extends AbstractEntity {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Set<Event> getFavoriteEvents() {
+    public List<Event> getFavoriteEvents() {
         return favoriteEvents;
     }
 
-    public void setFavoriteEvents(Set<Event> favoriteEvents) {
+    public void setFavoriteEvents(List<Event> favoriteEvents) {
         this.favoriteEvents = favoriteEvents;
     }
 }
+
