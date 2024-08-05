@@ -7,7 +7,7 @@ public class WeatherDTO {
         private String zipCurrentTemp;
 
         // Getters and setters
-        
+
         public String getZipLocation() {
             return zipLocation;
         }
