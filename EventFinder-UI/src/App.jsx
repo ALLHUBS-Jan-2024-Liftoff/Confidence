@@ -66,6 +66,7 @@ import ProtectedComponent from './components/ProtectedComponent';
 import LoginStatus from './components/LoginStatus';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/AdminDashboard';
+import Dashboard from './components/Dashboard';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -82,7 +83,7 @@ function App() {
           <Route path="/" element={<EventDetails />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/protected/*" element={<ProtectedRoute><ProtectedComponent /></ProtectedRoute>} />
+          <Route path="/protected/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
