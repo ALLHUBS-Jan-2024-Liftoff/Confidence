@@ -8,7 +8,11 @@ class AdminDashboard extends Component {
     filteredEvents: [],
     filter: 'All',
     showEditPopup: false,
-    editEvent: null
+    editEvent: null,
+    allCount: 0,
+    approvedCount: 0,
+    pendingCount: 0,
+    rejectedCount: 0,
   };
 
   componentDidMount() {
@@ -18,7 +22,15 @@ class AdminDashboard extends Component {
   fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/admin/events');
-      this.setState({ events: response.data, filteredEvents: response.data });
+      const event =response.data;
+      this.setState({ events: event, filteredEvents: event });
+
+      //const allCount = event.length;
+      const approvedCountC = event.filter(event => event.approvalStatus === 'Approved').length;
+      const pendingCountC = event.filter(event => event.approvalStatus === 'Pending').length;
+      const rejectedCountC = event.filter(event => event.approvalStatus === 'Rejected').length;
+      this.setState({allCount:event.length,approvedCount:approvedCountC,pendingCount:pendingCountC,rejectedCount:rejectedCountC});
+
     } catch (error) {
       console.error('Error fetching data', error);
     }
@@ -89,13 +101,31 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { filteredEvents, filter, showEditPopup, editEvent } = this.state;
+    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount } = this.state;
 
     return (
       <div className="admin-dashboard-container">
         <header className="header">
           Admin Dashboard
         </header>
+        <div className="tiles-container">
+        <div className="tile all" onClick={() => this.filterEvents('All')}>
+          <h3>All</h3>
+          <p>{allCount}</p>
+        </div>
+        <div className="tile approved" onClick={() => this.filterEvents('Approved')}>
+          <h3>Approved</h3>
+          <p>{approvedCount}</p>
+        </div>
+        <div className="tile pending" onClick={() => this.filterEvents('Pending')}>
+          <h3>Pending</h3>
+          <p>{pendingCount}</p>
+        </div>
+        <div className="tile rejected" onClick={() => this.filterEvents('Rejected')}>
+          <h3>Rejected</h3>
+          <p>{rejectedCount}</p>
+        </div>
+      </div>
         <div className="admin-dashboard">
           <aside className="sidebar">
             <ul>

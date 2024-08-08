@@ -60,11 +60,9 @@ public class AdminController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         if (!eventRepository.existsById(id)) {
-            // if event is not found indicates no deletion was performed.
             return ResponseEntity.notFound().build();
         }
         eventRepository.deleteById(id);
-        //if the event exists it proceed to delete the event using eventRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
