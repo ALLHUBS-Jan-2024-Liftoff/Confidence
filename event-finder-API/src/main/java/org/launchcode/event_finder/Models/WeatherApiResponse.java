@@ -1,49 +1,87 @@
 package org.launchcode.event_finder.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherApiResponse {
-    private Location location;
-    private Current current;
+    // the key value pair "temp": [degrees F] is nested under "main" under "list"
+    private List<WeatherList> list;
+    // the key value pair "name": "[location name associated with zip code]" is nested under "city"
+    private City city;
 
-    public Location getLocation() {
-        return location;
+    // Getters and setters
+    public List<WeatherList> getList() {
+        return list;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setList(List<WeatherList> list) {
+        this.list = list;
     }
 
-    public Current getCurrent() {
-        return current;
+    public City getCity() {
+        return city;
     }
 
-    public void setCurrent(Current current) {
-        this.current = current;
+    public void setCity(City city) {
+        this.city = city;
     }
 
-    public static class Location {
+    public static class WeatherList {
+        private Main main;
+        private List<Weather> weather;
+
+        // Getter and setter
+        public Main getMain() {
+            return main;
+        }
+
+        public void setMain(Main main) {
+            this.main = main;
+        }
+
+        public List<Weather> getWeather() {
+            return weather;
+        }
+
+        public void setWeather(List<Weather> weather) {
+            this.weather = weather;
+        }
+
+        public static class Main {
+            private double temp;
+
+            // Getter and setter
+            public double getTemp() {
+                return temp;
+            }
+
+            public void setTemp(double temp) {
+                this.temp = temp;
+            }
+        }
+
+        public static class Weather {
+            private String description;
+
+            public String getDescription() {
+                return description;
+            }
+
+            public void setDescription(String description) {
+                this.description = description;
+            }
+        }
+    }
+
+    public static class City {
         private String name;
 
+        // Getter and setter
         public String getName() {
             return name;
         }
 
         public void setName(String name) {
             this.name = name;
-        }
-    }
-
-    public static class Current {
-        private double temp_f;
-
-        public double getTempF() {
-            return temp_f;
-        }
-
-        public void setTempF(double temp_f) {
-            this.temp_f = temp_f;
         }
     }
 }
