@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Weather.css';
+import { getWeather } from './WeatherService';
+
+// Update: Use a service file and use axios, not fetch
 
 const Weather = () => {
+    const [weatherData, setWeatherData] = useState(null);
 
-    function getWeather() {
+    useEffect(() => {
         const zipCode = "63101"; // Hardcoding for now; replace with user input form later //
-        const url = `/api/weather?zipCode=${zipCode}`; 
-        fetch(url)
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error('Error fetching weather data:', error));
-    }
-
-    getWeather();
+        getWeather(zipCode)
+            .then((data) => setWeatherData(data))
+            .catch((error) => console.error('Error fetching weather data:', error));
+    }, []);
 
     return (
         <div className='container py-5'>
@@ -32,4 +32,4 @@ const Weather = () => {
 
 export default Weather;
 
-// Add display code starting at line 24
+// Add display code starting at line 22
