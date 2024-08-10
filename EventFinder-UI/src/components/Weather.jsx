@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Weather.css';
-import { getWeather } from './WeatherService';
+// import { getWeather } from '../servcies/WeatherService';
 
 // Update: Use a service file and use axios, not fetch
 
 const Weather = () => {
-    const [weatherData, setWeatherData] = useState(null);
+    // const [weatherData, setWeatherData] = useState(null);
 
-    useEffect(() => {
-        const zipCode = "63101"; // Hardcoding for now; replace with user input form later //
-        getWeather(zipCode)
-            .then((data) => setWeatherData(data))
-            .catch((error) => console.error('Error fetching weather data:', error));
-    }, []);
+    // useEffect(() => {
+    //     const zipCode = "63101"; // Hardcoding for now; replace with user input form later //
+    //     getWeather(zipCode)
+    //         .then((data) => setWeatherData(data))
+    //         .catch((error) => console.error('Error fetching weather data:', error));
+    // }, []);
 
     return (
         <div className='container py-5'>
