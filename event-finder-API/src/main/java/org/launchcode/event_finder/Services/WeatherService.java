@@ -1,6 +1,8 @@
 package org.launchcode.event_finder.Services;
 
 import org.launchcode.event_finder.Models.DTO.WeatherDTO;
+import org.launchcode.event_finder.Models.WeatherApiResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -9,25 +11,26 @@ public class WeatherService {
 
     private final RestTemplate restTemplate;
 
+    @Value("${weather.api.key}")
+    private String apiKey;
+
+    @Value("${weather.api.url}")
+    private String apiUrl;
+
     public WeatherService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public WeatherDTO getWeatherByZipCode (String zipCode) {
-        String apiUrl = "api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=25&units=imperial&units=imperial&appid=af691aedb33ac958f1003a70deb0a858";
-        WeatherDTO weather = restTemplate.getForObject(apiUrl, WeatherDTO.class);
-        return weather;
+    public WeatherDTO getWeatherByZipCode(String zipCode) {
+        String url = String.format("%s?zip=%s,us&cnt=1&units=imperial&appid=%s", apiUrl, zipCode, apiKey);
+        WeatherApiResponse apiResponse = restTemplate.getForObject(url, WeatherApiResponse.class);
+        return mapToWeatherDTO(apiResponse);
     }
 
+    private WeatherDTO mapToWeatherDTO(WeatherApiResponse apiResponse) {
+        WeatherDTO weatherDTO = new WeatherDTO();
+        weatherDTO.setLocation(apiResponse.getCity().getName());
+        weatherDTO.setTemp(apiResponse.getList().get(0).getMain().getTemp());
+        return weatherDTO;
+    }
 }
-//const Weather = () => {
-//// hardcoding 63130 for now - goal is to change location to zip on eventdetails and produce event weather on button click //
-//function getWeather() {
-//    var url =
-//            "api.openweathermap.org/data/2.5/forecast?zip=63130,us&cnt=25&units=imperial&units=imperial&appid=af691aedb33ac958f1003a70deb0a858";
-//    fetch(url)
-//            .then((response) => response.json())
-//    .then((data) => console.log(data));
-//}
-//
-//getWeather();

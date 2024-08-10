@@ -1,29 +1,23 @@
 package org.launchcode.event_finder.Models.DTO;
 
 public class WeatherDTO {
+    private String location;
+    private double temp;
 
-    public class WeatherDTO {
-        private String zipLocation;
-        private String zipCurrentTemp;
-
-        // Getters and setters
-
-        public String getZipLocation() {
-            return zipLocation;
-        }
-
-        public void setZipLocation(String zipLocation) {
-            this.zipLocation = zipLocation;
-        }
-
-        public String getZipCurrentTemp() {
-            return zipCurrentTemp;
-        }
-
-        public void setZipCurrentTemp(String zipCurrentTemp) {
-            this.zipCurrentTemp = zipCurrentTemp;
-        }
-
+    // Getters and setters
+    public String getLocation() {
+        return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
 }
