@@ -47,14 +47,33 @@ public class Event {
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
 
-
-
-    @Column(columnDefinition = "LONGTEXT")
-    private String eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
 
     private String approvalStatus="pending";
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+    @Lob
+    @Column(name = "event_image", columnDefinition = "LONGBLOB")
+    private byte[] eventImage; // This field will store the image as a byte array
+
+    // Getters and Setters for the fields
+    public byte[] getEventImage() {
+        return eventImage;
+    }
+
+    public void setEventImage(byte[] eventImage) {
+        this.eventImage = eventImage;
+    }
+
+
     public Event(){}
 
 //    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
@@ -135,16 +154,7 @@ public class Event {
         this.eventPrice = eventPrice;
     }
 
-
-    public String getEventImage() {
-        return eventImage;
-    }
-
-    public void setEventImage(String eventImage) {
-        this.eventImage = eventImage;
-    }
-
-    public String getImageMimeType() {
+   public String getImageMimeType() {
         return imageMimeType;
     }
 

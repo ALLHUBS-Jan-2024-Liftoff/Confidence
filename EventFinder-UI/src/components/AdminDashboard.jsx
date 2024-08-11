@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import '../styles/AdminDashboard.css';
+import CreateEvent from './CreateEvent';
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 class AdminDashboard extends Component {
+
+  
   state = {
     events: [],
     filteredEvents: [],
@@ -13,6 +17,8 @@ class AdminDashboard extends Component {
     approvedCount: 0,
     pendingCount: 0,
     rejectedCount: 0,
+    images: {}, 
+    error: null
   };
 
   componentDidMount() {
@@ -25,11 +31,11 @@ class AdminDashboard extends Component {
       const event =response.data;
       this.setState({ events: event, filteredEvents: event });
 
-      //const allCount = event.length;
       const approvedCountC = event.filter(event => event.approvalStatus === 'Approved').length;
       const pendingCountC = event.filter(event => event.approvalStatus === 'Pending').length;
       const rejectedCountC = event.filter(event => event.approvalStatus === 'Rejected').length;
       this.setState({allCount:event.length,approvedCount:approvedCountC,pendingCount:pendingCountC,rejectedCount:rejectedCountC});
+       event.forEach(event => this.fetchImage(event.id));
 
     } catch (error) {
       console.error('Error fetching data', error);
@@ -99,11 +105,23 @@ class AdminDashboard extends Component {
         return '';
     }
   };
+  fetchImage = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/admin/events/${id}/image`, { responseType: 'blob' });
+      const imageUrl = URL.createObjectURL(response.data);
+      this.setState(prevState => ({
+        images: { ...prevState.images, [id]: imageUrl }
+      }));
+    } catch (error) {
+      console.error('Error fetching image', error);
+    }
+  };
 
   render() {
-    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount } = this.state;
+    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount,images } = this.state;
 
     return (
+      
       <div className="admin-dashboard-container">
         <header className="header">
           Admin Dashboard
@@ -133,9 +151,13 @@ class AdminDashboard extends Component {
               <li className={filter === 'Approved' ? 'active' : ''} onClick={() => this.filterEvents('Approved')}>Approved</li>
               <li className={filter === 'Pending' ? 'active' : ''} onClick={() => this.filterEvents('Pending')}>Pending</li>
               <li className={filter === 'Rejected' ? 'active' : ''} onClick={() => this.filterEvents('Rejected')}>Rejected</li>
+              <li>
+                  <Link to="/create-event">Create Event</Link> 
+              </li>
             </ul>
           </aside>
           <main className="content">
+           
             <table className="event-table">
               <thead>
                 <tr>
@@ -155,7 +177,15 @@ class AdminDashboard extends Component {
                 {filteredEvents.map(event => (
                   <tr key={event.id}>
                     <td>{event.id}</td>
-                    <td>{event.eventName}</td>
+                    <td>
+                      {event.eventImage && images[event.id] ? (
+                        <img
+                          src={images[event.id]}
+                          alt={event.eventName}
+                          style={{ width: '100px', height: 'auto' }}
+                        />
+                      ) : 'No Image'}
+                    </td>
                     <td>{event.description}</td>
                     <td>{event.eventCategory}</td>
                     <td>{event.eventDate}</td>
@@ -171,6 +201,7 @@ class AdminDashboard extends Component {
                 ))}
               </tbody>
             </table>
+           
           </main>
         </div>
         <footer className="footer">
@@ -227,6 +258,7 @@ class AdminDashboard extends Component {
           </div>
         )}
       </div>
+     
     );
   }
 }

@@ -202,4 +202,9 @@ button {
 .tile.rejected {
   background-color: #b1675f;
 }
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 
