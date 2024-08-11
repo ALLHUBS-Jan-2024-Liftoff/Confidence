@@ -21,7 +21,14 @@ const Weather = () => {
                 <div className='card-body'>
                     <div className='mb-3'>
                         <h1 className='text-primary'>Event Weather</h1>
-
+                        {weatherData ? (
+                            <div>
+                                <p>In {weatherData.location}</p>
+                                <p>The temperature in the next three hours is expected to be: {weatherData.temp} °F</p>
+                            </div>
+                        ) : (
+                            <p>Loading...</p>
+                        )}
                     </div>
                 </div>
             </div>
@@ -31,5 +38,3 @@ const Weather = () => {
 };
 
 export default Weather;
-
-// Add display code starting at line 22
