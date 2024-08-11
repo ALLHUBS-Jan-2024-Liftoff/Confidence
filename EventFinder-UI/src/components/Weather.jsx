@@ -2,27 +2,39 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Weather.css';
 import { getWeather } from '../services/WeatherService';
+import STL_METRO_ZIPS from '../utilities/MetroZipCodes';
 
 const Weather = () => {
     const [weatherData, setWeatherData] = useState(null);
     const [zipCode, setZipCode] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const isValidZipCode = (zipCode) => {
+        return STL_METRO_ZIPS.includes(zipCode);
+    };
+
     const handleGetWeather = () => {
         if (zipCode.trim() === '') {
             console.error('Please enter a valid zip code.');
             return;
         }
+
         setLoading(true);
-        getWeather(zipCode)
-            .then((data) => {
-                setWeatherData(data);
-                setLoading(false); 
-            })
-            .catch((error) => {
-                console.error('Error fetching weather data:', error);
-                setLoading(false);
-            });
+
+        if (isValidZipCode(zipCode)) {
+            getWeather(zipCode)
+                .then((data) => {
+                    setWeatherData(data);
+                    setLoading(false); 
+                })
+                .catch((error) => {
+                    console.error('Error fetching weather data:', error);
+                    setLoading(false);
+                });
+        } else {
+            alert('Please enter a valid zip code from the St. Louis metro area.');
+            setLoading(false); 
+        }
     };
 
     return (
