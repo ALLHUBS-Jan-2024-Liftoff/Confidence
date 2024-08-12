@@ -14,8 +14,9 @@ const NavBar = () => {
             {isAdmin() && (
               <li><Link to="/admin">Admin Dashboard</Link></li>
             )}
-            <li><Link to="/protected">Protected</Link></li>
+            <li><Link to="/protectqed">Protected</Link></li>
             <li><a href="#logout" onClick={logout}>Logout</a></li>
+            <li><Link to="/weather">Weather</Link></li>
           </>
         ) : (
           <>
