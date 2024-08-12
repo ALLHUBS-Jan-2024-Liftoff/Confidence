@@ -1,4 +1,5 @@
 package org.launchcode.event_finder.Controllers;
+
 import org.launchcode.event_finder.Repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.launchcode.event_finder.Models.Event;
 import java.util.List;
 import java.util.Optional;
+
 
 
 @RestController
@@ -22,7 +24,9 @@ public class EventController {
     // Get all events
     @GetMapping
     public List<Event> getAllEvents() {
+
         return eventRepository.findAll( );
+
     }
 
 
@@ -36,6 +40,7 @@ public class EventController {
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
+
         if (eventOptional.isPresent( )) {
             return ResponseEntity.ok(eventOptional.get( ));
         } else {
@@ -45,8 +50,11 @@ public class EventController {
 }
 
 
+
 // /api/events/search?name=YourEventName
 // /api/events
 // /api/events/{eventId}
+
+
 
 
