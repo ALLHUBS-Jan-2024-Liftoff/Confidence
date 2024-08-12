@@ -140,7 +140,6 @@ button {
   border: none;
   cursor: pointer;
   font-size: 10px;
-  width: 80px; 
   text-align: center;
   line-height: 1.2;
 }
@@ -148,11 +147,13 @@ button {
 .button-edit {
   background-color: #4CAF50; 
   color: white;
+  width: 160px; 
 }
 
 .button-delete {
   background-color: #f44336; 
   color: white;
+  width: 80px; 
 }
 
 .button-edit:hover {

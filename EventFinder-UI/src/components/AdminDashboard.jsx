@@ -163,7 +163,7 @@ class AdminDashboard extends Component {
                 <tr>
                   <th>ID</th>
                   <th>Event Name</th>
-                  <th>Description</th>
+                  {/* <th>Description</th> */}
                   <th>Event Category</th>
                   <th>Event Date</th>
                   <th>Event Time</th>
@@ -186,15 +186,15 @@ class AdminDashboard extends Component {
                         />
                       ) : 'No Image'}
                     </td>
-                    <td>{event.description}</td>
+                    {/* <td>{event.description}</td> */}
                     <td>{event.eventCategory}</td>
-                    <td>{event.eventDate}</td>
-                    <td>{event.eventTime}</td>
+                    <td>{new Date(event.eventDate).toLocaleDateString()}</td>
+                    <td>{this.formatTime(event.eventTime)}</td>
                     <td>{event.eventLocation}</td>
                     <td>{event.eventPrice}</td>
                     <td>{event.approvalStatus}</td>
                     <td className='actions'>
-                      <button className="button-edit" onClick={() => this.toggleEditPopup(event)}>Edit</button>
+                      <button className="button-edit" onClick={() => this.toggleEditPopup(event)}>View/Edit</button>
                       <button className="button-delete"onClick={() => this.deleteEvent(event.id)}>Delete</button>
                     </td>
                   </tr>
@@ -213,6 +213,15 @@ class AdminDashboard extends Component {
               <h2>Edit Event</h2>
               {editEvent && (
                 <form>
+                  {editEvent.eventImage && images[editEvent.id] ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <img
+                          src={images[editEvent.id]}
+                          alt={editEvent.eventName}
+                          style={{ width: '300px', height: 'auto' }}
+                        />
+                        </div>
+                      ) : 'No Image'}
                   <label>ID: {editEvent.id}</label><br />
                   <label>
                     Event Name:
@@ -220,7 +229,14 @@ class AdminDashboard extends Component {
                   </label><br />
                   <label>
                     Description:
-                    <input type="text" name="description" value={editEvent.description} onChange={this.handleInputChange} />
+                    <textarea
+                      name="description"
+                      value={editEvent.description}
+                      onChange={this.handleInputChange}
+                      rows="5"  
+                      cols="50" 
+                      style={{ width: '100%' }}
+                    />
                   </label><br />
                   <label>
                     Event Category:
@@ -228,11 +244,21 @@ class AdminDashboard extends Component {
                   </label><br />
                   <label>
                     Event Date:
-                    <input type="datetime-local" name="eventDate" value={new Date(editEvent.eventDate).toLocaleDateString()} onChange={this.handleInputChange} />
+                    <input
+                      type="date"
+                      name="eventDate"
+                      value={editEvent.eventDate ? new Date(editEvent.eventDate).toISOString().slice(0, 10) : ''}
+                      onChange={this.handleInputChange}
+                    />
                   </label><br />
                   <label>
                     Event Time:
-                    <input type="time" name="eventTime" value={this.formatTime(editEvent.eventTime)} onChange={this.handleInputChange} />
+                    <input
+                     type="time"
+                     name="eventTime"
+                     value={editEvent.eventTime ? editEvent.eventTime.slice(0, 5) : ''}
+                     onChange={this.handleInputChange}
+                    />
                   </label><br />
                   <label>
                     Event Location:
