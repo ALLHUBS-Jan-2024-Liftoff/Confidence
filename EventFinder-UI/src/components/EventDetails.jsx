@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/EventDetails.css';
+import { Link } from 'react-router-dom';
 
 const EventDetails = () => {
     const [data, setData] = useState([]); // State to store fetched event data
@@ -27,13 +28,8 @@ const EventDetails = () => {
         axios.get('http://localhost:8080/api/events')
             .then(res => {
                 console.log('Fetched data:', res.data); // Log the fetched data
-                // Set approvalStatus to 'pending' for each event
-                const eventsWithPendingApproval = res.data.map(event => ({
-                    ...event,
-                    approvalStatus: 'pending'
-                }));
-                setData(eventsWithPendingApproval); // Set fetched data to state with pending approvalStatus
-                setFilteredData(eventsWithPendingApproval); // Initially set filteredData to all data
+                setData(res.data); // Set fetched data to state
+                setFilteredData(res.data); // Initially set filteredData to all data
             })
             .catch(err => {
                 console.error('Error fetching data:', err);
@@ -131,24 +127,8 @@ const EventDetails = () => {
     // Function to convert base64 image string to URL
     const base64ToImageUrl = (base64String, mimeType) => {
         if (!base64String) return ''; // Handle case where base64String is not available
-        const imageUrl = `data:${mimeType};base64,${base64String}`;
-        return imageUrl;
-    };
-
-    // Function to fetch and update approval status
-    const fetchAndUpdateApprovalStatus = (eventId) => {
-        // Assuming you have an endpoint to update approval status, e.g., PUT /api/events/:id/approve
-        axios.put(`http://localhost:8080/api/events/${eventId}/approve`)
-            .then(res => {
-                // Handle success if needed
-                console.log('Event approval status updated successfully');
-                // Refetch data to update changes
-                fetchData();
-            })
-            .catch(err => {
-                console.error('Error updating approval status:', err);
-                // Handle error if needed
-            });
+        // Construct the data URL
+        return `data:${mimeType};base64,${base64String}`;
     };
 
     return (
@@ -160,6 +140,10 @@ const EventDetails = () => {
 
                     <div className='mb-3'>
                         <h1 className='text-primary'>Event Finder</h1>
+                        <div className='mb-3'>
+                        <Link to="/about" className="btn btn-primary me-2">About</Link>
+                        <Link to="/contact" className="btn btn-secondary">Contact</Link>
+                    </div>
                         <input
                             type='text'
                             className='form-control'
@@ -236,8 +220,6 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
-                                        <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
-                                        <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
                                     </div>
                                 </div>
                             </div>
