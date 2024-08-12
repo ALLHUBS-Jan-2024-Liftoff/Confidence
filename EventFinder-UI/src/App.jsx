@@ -67,6 +67,7 @@ import LoginStatus from './components/LoginStatus';
 import Weather from './components/Weather';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/AdminDashboard';
+import Dashboard from './components/Dashboard';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -86,6 +87,7 @@ function App() {
           <Route path="/weather" element={<Weather />} />
           <Route path="/protected/*" element={<ProtectedRoute><ProtectedComponent /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

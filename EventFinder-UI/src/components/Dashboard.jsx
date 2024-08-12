@@ -1,17 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const goToEvents = () => {
-    navigate('/event-details');
-  };
+  const { user } = useAuth();
+
   return (
     <div>
       <h1>Dashboard</h1>
-      <p>Welcome to your dashboard!</p>
-      <button onClick={goToEvents}>To Events</button>
-      {/* Add more components or functionalities here as needed */}
+      <p>Welcome to your dashboard, {user.username}!</p>
     </div>
   );
 };
