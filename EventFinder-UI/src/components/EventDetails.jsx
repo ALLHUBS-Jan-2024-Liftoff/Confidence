@@ -250,8 +250,15 @@ const EventDetails = () => {
 
                                         <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
                                         <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
-                                        {user && (
-                                            <button className='btn btn-secondary' onClick={() => addFavorite(user.id, event.id)}>Add to Favorites</button>
+                                        {user && (<>
+                                            {console.log("User ID:", user.id)}
+                                            <button
+                                                className='btn btn-secondary'
+                                                onClick={() => addFavorite(user.id, event.id)}
+                                            >
+                                                Add to Favorites
+                                            </button>
+                                        </>
                                         )}
                                     </div>
                                 </div>

@@ -97,15 +97,7 @@ public class AuthController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
-    @PostMapping("/favorites/add")
-    public FavoriteEvent addFavoriteEvent(@RequestParam Integer userId, @RequestParam Long eventId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
-        FavoriteEvent favoriteEvent = new FavoriteEvent();
-        favoriteEvent.setUser(user);
-        favoriteEvent.setEvent(event);
-        return favoriteEventRepository.save(favoriteEvent);
-    }
+
 
     @DeleteMapping("/favorites/remove")
     public void removeFavoriteEvent(@RequestParam Integer userId, @RequestParam Long eventId) {
@@ -116,11 +108,7 @@ public class AuthController {
         favoriteEventRepository.delete(favoriteEvent);
     }
 
-    @GetMapping("/favorites/{userId}")
-    public List<Event> getFavoriteEvents(@PathVariable Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return favoriteEventRepository.findByUser(user).stream().map(FavoriteEvent::getEvent).collect(Collectors.toList());
-    }
+
 }
 
 

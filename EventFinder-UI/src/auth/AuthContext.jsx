@@ -11,32 +11,50 @@ export const AuthProvider = ({ children }) => {
 
   const addFavorite = async (userId, eventId) => {
     try {
-        const response = await axios.post(`http://localhost:8080/favorites/add`);
+        const response = await axios.post(`http://localhost:8080/api/users/${userId}/favorites/${eventId}`);
         setFavorites([...favorites, response.data]);
     } catch (error) {
         console.error('Error adding favorite', error);
     }
+  };
+
+  const removeFavorite = async (userId, eventId) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/users/${userId}/favorites/${eventId}`, {
+        withCredentials: true,  // Include this if needed for authentication
+      });
+      console.log(`Removed favorite: Event ID ${eventId}`);
+    } catch (error) {
+      console.error('Error removing favorite:', error);
+    }
+  };
+  const fetchFavorites = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/users/${userId}/favorites`, {
+            headers: {
+                'Cache-Control': 'no-cache',  // Prevent caching
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            },
+            params: {
+                t: new Date().getTime()  // Add a timestamp to prevent caching
+            }
+        });
+
+        console.log('Fetched favorites:', response.data);
+
+        // Check if the response data is an array and set it to favorites
+        setFavorites(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+        console.error('Error fetching favorites:', error);
+    }
 };
 
-const removeFavorite = async (userId, eventId) => {
-  try {
-      await axios.delete(`/api/auth/favorites/remove?userId=${userId}&eventId=${eventId}`);
-      setFavorites(favorites.filter(fav => fav.eventId !== eventId));
-  } catch (error) {
-      console.error('Error removing favorite', error);
+useEffect(() => {
+  if (user && favorites.length === 0) {
+    fetchFavorites(user.id);
   }
-};
-
-const fetchFavorites = async (userId) => {
-  try {
-      const response = await axios.get(`/api/auth/favorites/${userId}`);
-      setFavorites(Array.isArray(response.data) ? response.data : []);
-  } catch (error) {
-      console.error('Error fetching favorites', error);
-  }
-};
-
-
+}, [user, fetchFavorites]);
 
   const fetchUser = async () => {
     try {
