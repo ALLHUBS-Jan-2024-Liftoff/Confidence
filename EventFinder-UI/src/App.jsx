@@ -55,6 +55,7 @@
 // export default App;
 
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import RegistrationForm from './components/RegistrationForm';
