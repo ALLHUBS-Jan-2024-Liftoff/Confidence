@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/EventDetails.css';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
 const EventDetails = () => {
     const [data, setData] = useState([]); // State to store fetched event data
@@ -17,6 +18,8 @@ const EventDetails = () => {
         minPrice: '',
         maxPrice: ''
     });
+
+    const { user, addFavorite } = useAuth(); // Get user and addFavorite from AuthContext
 
     // Fetch data from API on initial component mount
     useEffect(() => {
@@ -228,6 +231,18 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
 
+                                        <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
+                                        <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
+                                        {user && (<>
+                                            {console.log("User ID:", user.id)}
+                                            <button
+                                                className='btn btn-secondary'
+                                                onClick={() => addFavorite(user.id, event.id)}
+                                            >
+                                                Add to Favorites
+                                            </button>
+                                        </>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -245,6 +260,4 @@ const EventDetails = () => {
     );
 };
 
-
 export default EventDetails;
-
