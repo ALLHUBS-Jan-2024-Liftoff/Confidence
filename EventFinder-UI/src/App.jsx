@@ -71,6 +71,7 @@ import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
 import Contact from './components/Contact';
 import Dashboard from './components/Dashboard';
+import CreateEvent from './components/CreateEvent'
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -93,6 +94,7 @@ function App() {
           <Route path="/weather" element={<Weather />} />
           
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/create-event" element={<CreateEvent />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
