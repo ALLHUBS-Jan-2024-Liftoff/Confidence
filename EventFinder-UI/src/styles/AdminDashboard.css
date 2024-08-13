@@ -140,7 +140,6 @@ button {
   border: none;
   cursor: pointer;
   font-size: 10px;
-  width: 80px; 
   text-align: center;
   line-height: 1.2;
 }
@@ -148,11 +147,13 @@ button {
 .button-edit {
   background-color: #4CAF50; 
   color: white;
+  width: 160px; 
 }
 
 .button-delete {
   background-color: #f44336; 
   color: white;
+  width: 80px; 
 }
 
 .button-edit:hover {
@@ -165,4 +166,45 @@ button {
 .actions {
   display: flex;
   justify-content: space-between;
+}
+.tiles-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.tile {
+  width: 150px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  margin: 0 10px; 
+}
+
+.tile.all {
+  background-color: #63869d;
+}
+
+.tile.approved {
+  background-color: #5ec489;
+}
+
+.tile.pending {
+  background-color: #ad9b55;
+}
+
+.tile.rejected {
+  background-color: #b1675f;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
