@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Event {
@@ -50,12 +52,9 @@ public class Event {
     // 1 MB size limit
     // private String eventImage;   // Stores image data in byte array format.
 
-
-
-
-
-    @Column(columnDefinition = "LONGTEXT")
-    private String eventImage;
+    @Lob
+    @Column(name = "event_image", columnDefinition = "LONGBLOB")
+    private byte[] eventImage;
     private String imageMimeType;  // Stores MIME type of image. image/jpeg , png . gif etc.
 
 
@@ -81,7 +80,8 @@ public class Event {
     //public String approvalStatus = "Pending";
 
 
-
+//    @ManyToMany(mappedBy = "favoriteEvents")
+//    private Set<User> usersWhoFavorited = new HashSet<>();
 
 
     public Long getId() {
@@ -144,12 +144,11 @@ public class Event {
         this.eventPrice = eventPrice;
     }
 
-
-    public String getEventImage() {
+    public byte[] getEventImage() {
         return eventImage;
     }
 
-    public void setEventImage(String eventImage) {
+    public void setEventImage(byte[] eventImage) {
         this.eventImage = eventImage;
     }
 

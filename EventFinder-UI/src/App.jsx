@@ -1,4 +1,5 @@
 
+
 // import React, { useEffect, useState } from 'react';
 // import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 // import Register from './components/Register';
@@ -67,6 +68,10 @@ import LoginStatus from './components/LoginStatus';
 import Weather from './components/Weather';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/AdminDashboard';
+import About from './components/About';
+import Contact from './components/Contact';
+import Dashboard from './components/Dashboard';
+import CreateEvent from './components/CreateEvent'
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -81,11 +86,15 @@ function App() {
         <LoginStatus />
         <Routes>
           <Route path="/" element={<EventDetails />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/weather" element={<Weather />} />
-          <Route path="/protected/*" element={<ProtectedRoute><ProtectedComponent /></ProtectedRoute>} />
+          
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/create-event" element={<CreateEvent />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
