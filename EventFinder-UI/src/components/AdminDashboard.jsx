@@ -72,7 +72,8 @@ class AdminDashboard extends Component {
         }
       });
       this.toggleEditPopup(null);
-      window.location.reload();
+      //navigate('/admin');
+      this.fetchData();
     } catch (error) {
       console.error('Error updating the event:', error);
     }
@@ -151,6 +152,9 @@ class AdminDashboard extends Component {
               <li className={filter === 'Approved' ? 'active' : ''} onClick={() => this.filterEvents('Approved')}>Approved</li>
               <li className={filter === 'Pending' ? 'active' : ''} onClick={() => this.filterEvents('Pending')}>Pending</li>
               <li className={filter === 'Rejected' ? 'active' : ''} onClick={() => this.filterEvents('Rejected')}>Rejected</li>
+              <li>
+                  <Link to="/create-event">Create Event</Link> 
+              </li>
               </ul>
           </aside>
           <main className="content">

@@ -1,0 +1,46 @@
+
+.create-event-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-event-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-event-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-event-container label {
+    margin-bottom: 10px;
+  }
+  
+  .create-event-container input,
+  .create-event-container select {
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .create-event-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .create-event-container button:hover {
+    background-color: #0056b3;
+  }
+  
