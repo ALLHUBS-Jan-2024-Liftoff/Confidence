@@ -11,7 +11,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (user && favorites.length === 0) {
+    if (user) {
       fetchFavorites(user.id);
     }
     // Empty dependency array to avoid re-fetching on every render
