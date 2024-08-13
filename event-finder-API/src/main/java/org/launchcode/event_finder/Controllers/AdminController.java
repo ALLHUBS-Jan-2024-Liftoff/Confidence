@@ -68,5 +68,17 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @GetMapping("/{id}/image")
+    public ResponseEntity<byte[]> getEventImage(@PathVariable Long id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            byte[] imageBytes = event.getEventImage();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // Adjust this based on your image type
+                    .body(imageBytes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
