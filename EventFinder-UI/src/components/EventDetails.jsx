@@ -18,7 +18,7 @@ const EventDetails = () => {
         minPrice: '',
         maxPrice: ''
     });
-
+    const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to manage RSVP status
     const { user, addFavorite } = useAuth(); // Get user and addFavorite from AuthContext
 
     // Fetch data from API on initial component mount
@@ -135,8 +135,19 @@ const EventDetails = () => {
         // Construct the data URL
         return `data:${mimeType};base64,${base64String}`;
     };
-
-
+    const handleRsvpUpdate = async (eventId, status) => {
+        try {
+            await axios.post(`http://localhost:8080/api/events/${eventId}/rsvp`, null, {
+                params: {
+                    userId: user.id,
+                    status: status
+                }
+            });
+            setRsvpStatuses(prevStatuses => ({ ...prevStatuses, [eventId]: status }));
+        } catch (error) {
+            console.error("There was an error updating the RSVP status!", error);
+        }
+    };
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
@@ -241,6 +252,20 @@ const EventDetails = () => {
                                             >
                                                 Add to Favorites
                                             </button>
+                                            <div className='mt-3'>
+                                            <p><strong>Current RSVP Status:</strong> {rsvpStatuses[event.id] || 'No RSVP'}</p>
+                                                    <label>RSVP Status: </label>
+                                                    <select
+                                                        value={rsvpStatuses[event.id] || 'none'}
+                                                        onChange={(e) => handleRsvpUpdate(event.id, e.target.value)}
+                                                        className='form-select'
+                                                    >
+                                                        <option value="none">No RSVP</option>
+                                                        <option value="attending">Attending</option>
+                                                        <option value="not attending">Not Attending</option>
+                                                        <option value="interested">Interested</option>
+                                                    </select>
+                                                </div>
                                         </>
                                         )}
                                     </div>

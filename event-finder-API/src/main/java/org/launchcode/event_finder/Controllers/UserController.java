@@ -4,9 +4,11 @@ package org.launchcode.event_finder.Controllers;
 
 import org.launchcode.event_finder.Models.Event;
 import org.launchcode.event_finder.Models.FavoriteEvent;
+import org.launchcode.event_finder.Models.RSVP;
 import org.launchcode.event_finder.Models.User;
 import org.launchcode.event_finder.Repositories.EventRepository;
 import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
+import org.launchcode.event_finder.Repositories.RSVPRepository;
 import org.launchcode.event_finder.Repositories.UserRepository;
 import org.launchcode.event_finder.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,14 @@ public class UserController {
 
         return ResponseEntity.ok(favoriteEvents); // Return as JSON
     }
+    @Autowired
+    private RSVPRepository rsvpRepository;
 
+    @GetMapping("/{userId}/rsvps")
+    public ResponseEntity<List<RSVP>> getUserRsvps(@PathVariable Integer userId) {
+        List<RSVP> rsvps = rsvpRepository.findByUserId(userId);
+        return ResponseEntity.ok(rsvps);
+    }
 
     @DeleteMapping("/{userId}/favorites/{eventId}")
     public void removeFavoriteEvent(@PathVariable Integer userId, @PathVariable Long eventId) {

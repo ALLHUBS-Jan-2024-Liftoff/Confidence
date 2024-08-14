@@ -59,7 +59,7 @@ public class EventController {
         }
     }
 
-    @PostMapping("/events/{eventId}/rsvp")
+    @PostMapping("/{eventId}/rsvp")
     public ResponseEntity<RSVP> rsvpToEvent(@PathVariable Long eventId, @RequestParam Integer userId, @RequestParam String status) {
         Optional<Event> event = eventRepository.findById(eventId);
 
