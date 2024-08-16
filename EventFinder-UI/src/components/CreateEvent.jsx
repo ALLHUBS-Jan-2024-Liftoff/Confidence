@@ -37,7 +37,8 @@ const CreateEvent = () => {
     if (!state.event_category.trim()) newErrors.event_category = 'Event category is required.';
     if (!state.event_date.trim()) newErrors.event_date = 'Event date is required.';
     if (!state.event_time.trim()) newErrors.event_time = 'Event time is required.';
-    if (!state.event_location.trim()) newErrors.event_location = 'Event location is required.';
+    if (!state.event_location.trim()) newErrors.event_location = 'Event venue is required.';
+    if (!state.event_cityzip.trim()) newErrors.event_cityzip = 'Event zip code is required.';
     if (!state.event_price || isNaN(state.event_price) || state.event_price <= 0) {
       newErrors.event_price = 'Event price must be a positive number.';
     }
@@ -146,7 +147,13 @@ const CreateEvent = () => {
         </label>
         <label>
           Event City and Zip Code:
-          <input type="text" name="event_cityzip" value={state.event_cityzip} onChange={handleInputChange} />
+          <input 
+          type="text" 
+          name="event_cityzip" 
+          value={state.event_cityzip} 
+          onChange={handleInputChange}
+          />
+          {errors.event_cityzip && <span className="error">{errors.event_cityzip}</span>}
         </label>
         <label>
           Event Price:

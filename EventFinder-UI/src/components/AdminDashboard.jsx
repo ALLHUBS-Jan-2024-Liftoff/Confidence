@@ -83,7 +83,10 @@ class AdminDashboard extends Component {
       errors.eventTime = 'Event time is required.';
     }
     if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
-      errors.eventLocation = 'Event location is required.';
+      errors.eventLocation = 'Event venue name is required.';
+    }
+    if (!editEvent.eventLocation || editEvent.eventcityzip.trim() === '') {
+      errors.eventLocation = 'Event zip code is required.';
     }
     if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
       errors.eventPrice = 'Event price must be a positive number.';
@@ -208,7 +211,7 @@ class AdminDashboard extends Component {
                   <th>Event Category</th>
                   <th>Event Date</th>
                   <th>Event Time</th>
-                  <th>Event Location</th>
+                  <th>Event Venue</th>
                   <th>Event City and Zip Code</th>
                   <th>Event Price</th>
                   <th>Approval Status</th>
@@ -301,13 +304,14 @@ class AdminDashboard extends Component {
                     {editErrors.eventTime && <span className="error">{editErrors.eventTime}</span>}
                   </label><br />
                   <label>
-                    Event Location:
+                    Event Venue:
                     <input type="text" name="eventLocation" value={editEvent.eventLocation} onChange={this.handleInputChange} />
                     {editErrors.eventLocation && <span className="error">{editErrors.eventLocation}</span>} 
                   </label><br />
                   <label>
                     Event City and Zip Code:
                     <input type="text" name="eventCityzip" value={editEvent.eventCityzip} onChange={this.handleInputChange} />
+                    {editErrors.eventCityzip && <span className="error">{editErrors.eventCityzip}</span>} 
                   </label><br />
                   <label>
                     Event Price:
