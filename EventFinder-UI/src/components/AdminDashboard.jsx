@@ -3,9 +3,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import '../styles/AdminDashboard.css';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import STL_METRO_ZIPS from '../utilities/MetroZipCodes';
+
+const isValidZipCode = (zipCode) => {
+  return STL_METRO_ZIPS.includes(zipCode);
+};
 
 class AdminDashboard extends Component {
-
   
   state = {
     events: [],
@@ -85,8 +89,10 @@ class AdminDashboard extends Component {
     if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
       errors.eventLocation = 'Event venue name is required.';
     }
-    if (!editEvent.eventCityzip || editEvent.eventcityzip.trim() === '') {
+    if (!editEvent.eventCityzip || editEvent.eventCityzip.trim() === '') {
       errors.eventCityzip = 'Event zip code is required.';
+    } else if (!isValidZipCode(editEvent.eventCityzip)) {
+      errors.eventCityzip = 'Please enter a valid zip code from the St. Louis metro area.';
     }
     if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
       errors.eventPrice = 'Event price must be a positive number.';
