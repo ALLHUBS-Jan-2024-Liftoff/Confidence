@@ -17,6 +17,7 @@ const CreateEvent = () => {
     image: null,
   });
 
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -28,8 +29,32 @@ const CreateEvent = () => {
     setState((prevState) => ({ ...prevState, image: e.target.files[0] }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!state.event_name.trim()) newErrors.event_name = 'Event name is required.';
+    if (!state.description.trim()) newErrors.description = 'Description is required.';
+    if (!state.event_category.trim()) newErrors.event_category = 'Event category is required.';
+    if (!state.event_date.trim()) newErrors.event_date = 'Event date is required.';
+    if (!state.event_time.trim()) newErrors.event_time = 'Event time is required.';
+    if (!state.event_location.trim()) newErrors.event_location = 'Event location is required.';
+    if (!state.event_price || isNaN(state.event_price) || state.event_price <= 0) {
+      newErrors.event_price = 'Event price must be a positive number.';
+    }
+    if (!state.approval_status.trim()) newErrors.approval_status = 'Approval status is required.';
+    if (!state.image) newErrors.image = 'Event image is required.';
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const formData = new FormData();
     formData.append('approvalStatus', state.approval_status);
@@ -49,7 +74,7 @@ const CreateEvent = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      navigate('/admin'); // Navigate to '/'
+      navigate('/admin');
     } catch (error) {
       console.error('Error creating event', error);
     }
@@ -61,27 +86,63 @@ const CreateEvent = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Event Name:
-          <input type="text" name="event_name" value={state.event_name} onChange={handleInputChange} />
+          <input
+            type="text"
+            name="event_name"
+            value={state.event_name}
+            onChange={handleInputChange}
+          />
+          {errors.event_name && <span className="error">{errors.event_name}</span>}
         </label>
         <label>
           Description:
-          <input type="text" name="description" value={state.description} onChange={handleInputChange} />
+          <input
+            type="text"
+            name="description"
+            value={state.description}
+            onChange={handleInputChange}
+          />
+          {errors.description && <span className="error">{errors.description}</span>}
         </label>
         <label>
           Event Category:
-          <input type="text" name="event_category" value={state.event_category} onChange={handleInputChange} />
+          <input
+            type="text"
+            name="event_category"
+            value={state.event_category}
+            onChange={handleInputChange}
+          />
+          {errors.event_category && <span className="error">{errors.event_category}</span>}
         </label>
         <label>
           Event Date:
-          <input type="datetime-local" name="event_date" value={state.event_date} onChange={handleInputChange} />
+          <input
+            type="date"
+            name="event_date"
+            value={state.event_date}
+            onChange={handleInputChange}
+          />
+          {errors.event_date && <span className="error">{errors.event_date}</span>}
         </label>
         <label>
           Event Time:
-          <input type="time" name="event_time" value={state.event_time} onChange={handleInputChange} />
+          <input
+            type="time"
+            name="event_time"
+            value={state.event_time}
+            onChange={handleInputChange}
+          />
+          {errors.event_time && <span className="error">{errors.event_time}</span>}
         </label>
         <label>
           Event Venue:
-          <input type="text" name="event_location" value={state.event_location} onChange={handleInputChange} />
+          <input
+            type="text"
+            name="event_location"
+            value={state.event_location}
+            onChange={handleInputChange}
+          />
+          {errors.event_location && <span className="error">{errors.event_location}</span>}
         </label>
         <label>
           Event City and Zip Code:
@@ -89,19 +150,32 @@ const CreateEvent = () => {
         </label>
         <label>
           Event Price:
-          <input type="number" name="event_price" value={state.event_price} onChange={handleInputChange} />
+          <input
+            type="number"
+            name="event_price"
+            value={state.event_price}
+            onChange={handleInputChange}
+          />
+          {errors.event_price && <span className="error">{errors.event_price}</span>}
         </label>
         <label>
           Approval Status:
-          <select name="approval_status" value={state.approval_status} onChange={handleInputChange}>
+          <select
+            name="approval_status"
+            value={state.approval_status}
+            onChange={handleInputChange}
+          >
+            <option value="">Select status</option>
             <option value="Approved">Approved</option>
             <option value="Pending">Pending</option>
             <option value="Rejected">Rejected</option>
           </select>
+          {errors.approval_status && <span className="error">{errors.approval_status}</span>}
         </label>
         <label>
           Event Image:
           <input type="file" name="image" onChange={handleImageChange} />
+          {errors.image && <span className="error">{errors.image}</span>}
         </label>
         <button type="submit">Create Event</button>
       </form>

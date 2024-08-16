@@ -18,7 +18,8 @@ class AdminDashboard extends Component {
     pendingCount: 0,
     rejectedCount: 0,
     images: {}, 
-    error: null
+    error: null,
+    editErrors: {}
   };
 
   componentDidMount() {
@@ -52,7 +53,7 @@ class AdminDashboard extends Component {
   };
 
   toggleEditPopup = (event) => {
-    this.setState({ showEditPopup: !this.state.showEditPopup, editEvent: event });
+    this.setState({ showEditPopup: !this.state.showEditPopup, editEvent: event ,editErrors:{}});
   };
 
   handleInputChange = (e) => {
@@ -62,7 +63,46 @@ class AdminDashboard extends Component {
     this.setState({ editEvent: { ...editEvent, [name]: value } });
   };
 
+  validateEditForm = () => {
+    const { editEvent } = this.state;
+    const errors = {};
+  
+    if (!editEvent.eventName || editEvent.eventName.trim() === '') {
+      errors.eventName = 'Event name is required.';
+    }
+    if (!editEvent.description || editEvent.description.trim() === '') {
+      errors.description = 'Description is required.';
+    }
+    if (!editEvent.eventCategory || editEvent.eventCategory.trim() === '') {
+      errors.eventCategory = 'Event category is required.';
+    }
+    if (!editEvent.eventDate) {
+      errors.eventDate = 'Event date is required.';
+    }
+    if (!editEvent.eventTime) {
+      errors.eventTime = 'Event time is required.';
+    }
+    if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
+      errors.eventLocation = 'Event location is required.';
+    }
+    if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
+      errors.eventPrice = 'Event price must be a positive number.';
+    }
+    if (!editEvent.approvalStatus || editEvent.approvalStatus.trim() === '') {
+      errors.approvalStatus = 'Approval status is required.';
+    }
+  
+    this.setState({ editErrors: errors });
+    return Object.keys(errors).length === 0;
+  };
+  
+
   saveChanges = async () => {
+
+    if (!this.validateEditForm()) {
+      return;
+    }
+
     const { editEvent } = this.state;
   
     try {
@@ -119,7 +159,7 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount,images } = this.state;
+    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount,images,editErrors } = this.state;
 
     return (
       
@@ -186,7 +226,7 @@ class AdminDashboard extends Component {
                     <td>{this.formatTime(event.eventTime)}</td>
                     <td>{event.eventLocation}</td>
                     <td>{event.eventCityzip}</td>
-                    <td>{event.eventPrice}</td>
+                    <td>${event.eventPrice.toFixed(2)}</td>
                     <td>{event.approvalStatus}</td>
                     <td className='actions'>
                       <button className="button-edit" onClick={() => this.toggleEditPopup(event)}>View/Edit</button>
@@ -221,6 +261,7 @@ class AdminDashboard extends Component {
                   <label>
                     Event Name:
                     <input type="text" name="eventName" value={editEvent.eventName} onChange={this.handleInputChange} />
+                    {editErrors.eventName && <span className="error">{editErrors.eventName}</span>}                   
                   </label><br />
                   <label>
                     Description:
@@ -232,10 +273,12 @@ class AdminDashboard extends Component {
                       cols="50" 
                       style={{ width: '100%' }}
                     />
+                    {editErrors.description && <span className="error">{editErrors.description}</span>}
                   </label><br />
                   <label>
                     Event Category:
                     <input type="text" name="eventCategory" value={editEvent.eventCategory} onChange={this.handleInputChange} />
+                    {editErrors.eventCategory && <span className="error">{editErrors.eventCategory}</span>}
                   </label><br />
                   <label>
                     Event Date:
@@ -245,6 +288,7 @@ class AdminDashboard extends Component {
                       value={editEvent.eventDate ? new Date(editEvent.eventDate).toISOString().slice(0, 10) : ''}
                       onChange={this.handleInputChange}
                     />
+                    {editErrors.eventDate && <span className="error">{editErrors.eventDate}</span>}
                   </label><br />
                   <label>
                     Event Time:
@@ -254,10 +298,12 @@ class AdminDashboard extends Component {
                      value={editEvent.eventTime ? editEvent.eventTime.slice(0, 5) : ''}
                      onChange={this.handleInputChange}
                     />
+                    {editErrors.eventTime && <span className="error">{editErrors.eventTime}</span>}
                   </label><br />
                   <label>
                     Event Location:
                     <input type="text" name="eventLocation" value={editEvent.eventLocation} onChange={this.handleInputChange} />
+                    {editErrors.eventLocation && <span className="error">{editErrors.eventLocation}</span>} 
                   </label><br />
                   <label>
                     Event City and Zip Code:
@@ -266,6 +312,7 @@ class AdminDashboard extends Component {
                   <label>
                     Event Price:
                     <input type="number" name="eventPrice" value={editEvent.eventPrice} onChange={this.handleInputChange} />
+                    {editErrors.eventPrice && <span className="error">{editErrors.eventPrice}</span>} 
                   </label><br />
                   <label>
                     Approval Status:
@@ -274,6 +321,7 @@ class AdminDashboard extends Component {
                       <option value="Pending">Pending</option>
                       <option value="Rejected">Rejected</option>
                     </select>
+                    {editErrors.approvalStatus && <span className="error">{editErrors.approvalStatus}</span>}
                   </label><br />
                   <button type="button" onClick={this.saveChanges}>Save</button>
                   <button type="button" onClick={this.toggleEditPopup}>Cancel</button>
