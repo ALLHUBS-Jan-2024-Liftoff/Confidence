@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import axios from 'axios';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, favorites, fetchFavorites, removeFavorite, } = useAuth();
+  const { user, favorites, fetchFavorites, removeFavorite } = useAuth();
   const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to store RSVP statuses
-
-  const goToEvents = () => {
-    navigate('/event-details');
-  };
+  const [showRsvpPopup, setShowRsvpPopup] = useState(null); // State to manage RSVP popup visibility
 
   useEffect(() => {
     if (user) {
@@ -21,21 +19,20 @@ const Dashboard = () => {
 
   const fetchRsvpStatuses = async (userId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/users/${userId}/rsvps`);
-        console.log('RSVP Response:', response.data);
-        const rsvpMap = {};
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/rsvps`);
+      const rsvpMap = {};
 
-        // Assuming response.data is an array of RSVP objects
-        response.data.forEach(rsvp => {
-            const eventId = rsvp.event.id;  // Extracting the eventId from the event object
-            rsvpMap[eventId] = rsvp.status;
-        });
+      response.data.forEach(rsvp => {
+        const eventId = rsvp.event.id; // Extracting the eventId from the event object
+        rsvpMap[eventId] = rsvp.status;
+      });
 
-        setRsvpStatuses(rsvpMap);
+      setRsvpStatuses(rsvpMap);
     } catch (error) {
-        console.error('Error fetching RSVP statuses:', error);
+      console.error('Error fetching RSVP statuses:', error);
     }
-};
+  };
+
   const handleRemove = async (eventId) => {
     try {
       await removeFavorite(user.id, eventId);
@@ -47,17 +44,18 @@ const Dashboard = () => {
 
   const handleRsvpUpdate = async (eventId, status) => {
     try {
-        await axios.post(`http://localhost:8080/api/events/${eventId}/rsvp`, null, {
-            params: {
-                userId: user.id,
-                status: status
-            }
-        });
-        setRsvpStatuses(prevStatuses => ({ ...prevStatuses, [eventId]: status }));
+      await axios.post(`http://localhost:8080/api/events/${eventId}/rsvp`, null, {
+        params: {
+          userId: user.id,
+          status: status
+        }
+      });
+      setRsvpStatuses(prevStatuses => ({ ...prevStatuses, [eventId]: status }));
+      setShowRsvpPopup(null); // Close the popup after updating
     } catch (error) {
-        console.error("There was an error updating the RSVP status!", error);
+      console.error("There was an error updating the RSVP status!", error);
     }
-};
+  };
 
   const formatTime = (time) => {
     try {
@@ -108,19 +106,20 @@ const Dashboard = () => {
                   <td>{event.eventLocation}</td>
                   <td>{event.eventPrice}</td>
                   <td>
-                    <select
-                      value={rsvpStatuses[event.id] || 'none'}
-                      onChange={(e) => handleRsvpUpdate(event.id, e.target.value)}
-                    >
-                      <option value="none">No RSVP</option>
-                      <option value="attending">Attending</option>
-                      <option value="not attending">Not Attending</option>
-                      <option value="interested">Interested</option>
-                    </select>
+                    <p>{rsvpStatuses[event.id] || 'No RSVP'}</p>
                   </td>
                   <td>
-                    <button onClick={() => handleRemove(event.id)} className="button-remove">
-                      Remove
+                    <button
+                      onClick={() => setShowRsvpPopup(event.id)}
+                      className="button-rsvp"
+                    >
+                      RSVP
+                    </button>
+                    <button
+                      onClick={() => handleRemove(event.id)}
+                      className="button-remove"
+                    >
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -131,6 +130,30 @@ const Dashboard = () => {
           <p>You have no favorite events yet.</p>
         )}
       </div>
+
+      {showRsvpPopup && (
+        <div className="rsvp-popup">
+          <div className="rsvp-popup-content">
+            <h3>Change RSVP Status</h3>
+            <select
+              value={rsvpStatuses[showRsvpPopup] || 'none'}
+              onChange={(e) => handleRsvpUpdate(showRsvpPopup, e.target.value)}
+              className="form-select"
+            >
+              <option value="none">No RSVP</option>
+              <option value="attending">Attending</option>
+              <option value="not attending">Not Attending</option>
+              <option value="interested">Interested</option>
+            </select>
+            <button
+              onClick={() => setShowRsvpPopup(null)}
+              className="button-close"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
