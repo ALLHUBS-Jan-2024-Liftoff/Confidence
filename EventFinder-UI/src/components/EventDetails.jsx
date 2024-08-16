@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 
 const EventDetails = () => {
+    const [showRsvpPopup, setShowRsvpPopup] = useState(null);
+    const [favoriteEvents, setFavoriteEvents] = useState([]); // State to track user's favorite events
+    
     const [data, setData] = useState([]); // State to store fetched event data
     const [filteredData, setFilteredData] = useState([]); // State to store filtered event data
     const [error, setError] = useState(null); // State to handle errors during data fetching
@@ -19,13 +22,29 @@ const EventDetails = () => {
         minPrice: '',
         maxPrice: ''
     });
-
-    const { user, addFavorite } = useAuth(); // Get user and addFavorite from AuthContext
+    const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to manage RSVP status
+    const { user, addFavorite, removeFavorite, fetchFavorites } = useAuth(); // Get user and addFavorite from AuthContext
 
     // Fetch data from API on initial component mount
     useEffect(() => {
         fetchData();
-    }, []);
+        if (user) {
+            loadFavorites();
+        }
+    }, [user]);
+
+       // Function to load user's favorite events
+       // Function to load user's favorite events
+const loadFavorites = async () => {
+    try {
+        const favorites = await fetchFavorites(user.id);
+        // If favorites is undefined, use an empty array as a fallback
+        setFavoriteEvents(favorites ? favorites.map(fav => fav.id) : []);
+    } catch (error) {
+        console.error('Error fetching favorite events:', error);
+        setFavoriteEvents([]); // Ensure the state is at least an empty array to prevent further errors
+    }
+};
 
     // Function to fetch event data from API
     const fetchData = () => {
@@ -34,7 +53,6 @@ const EventDetails = () => {
                 console.log('Fetched data:', res.data); // Log the fetched data
                 setData(res.data); // Set fetched data to state
                 setFilteredData(res.data); // Initially set filteredData to all data
-
             })
             .catch(err => {
                 console.error('Error fetching data:', err);
@@ -42,6 +60,28 @@ const EventDetails = () => {
             });
     };
 
+    // Function to handle adding an event to favorites
+    const handleAddFavorite = async (eventId) => {
+        try {
+            await addFavorite(user.id, eventId);
+            setFavoriteEvents([...favoriteEvents, eventId]); // Add the event ID to the favoriteEvents array
+        } catch (error) {
+            console.error('An error occurred while adding the event to favorites.', error);
+        }
+    };
+    
+      // Function to handle removing an event from favorites
+      const handleRemoveFavorite = async (eventId) => {
+        try {
+            await removeFavorite(user.id, eventId);
+            setFavoriteEvents(favoriteEvents.filter(id => id !== eventId)); // Remove the event ID from the favoriteEvents array
+        } catch (error) {
+            console.error('An error occurred while removing the event from favorites.', error);
+        }
+    };
+    
+    
+    
     // Effect to apply filters whenever filters state changes
     useEffect(() => {
         applyFilters();
@@ -136,7 +176,6 @@ const EventDetails = () => {
         }
     };
 
-
     // Function to convert base64 image string to URL
     const base64ToImageUrl = (base64String, mimeType) => {
         if (!base64String) return ''; // Handle case where base64String is not available
@@ -144,6 +183,19 @@ const EventDetails = () => {
         return `data:${mimeType};base64,${base64String}`;
     };
 
+    const handleRsvpUpdate = async (eventId, status) => {
+        try {
+            await axios.post(`http://localhost:8080/api/events/${eventId}/rsvp`, null, {
+                params: {
+                    userId: user.id,
+                    status: status
+                }
+            });
+            setRsvpStatuses(prevStatuses => ({ ...prevStatuses, [eventId]: status }));
+        } catch (error) {
+            console.error("There was an error updating the RSVP status!", error);
+        }
+    };
 
     return (
         <div className='container py-5'>
@@ -155,9 +207,9 @@ const EventDetails = () => {
                     <div className='mb-3'>
                         <h1 className='text-primary'>Event Finder</h1>
                         <div className='mb-3'>
-                        <Link to="/about" className="btn btn-primary me-2">About</Link>
-                        <Link to="/contact" className="btn btn-secondary">Contact</Link>
-                    </div>
+                            <Link to="/about" className="btn btn-primary me-2">About</Link>
+                            <Link to="/contact" className="btn btn-secondary">Contact</Link>
+                        </div>
                         <input
                             type='text'
                             className='form-control'
@@ -227,18 +279,14 @@ const EventDetails = () => {
                     </div>
 
                     <div className='row row-cols-1 row-cols-md-2 g-4'>
-
                         {filteredData.map((event, index) => (
                             <div key={index} className='col'>
-
                                 <div className='card'>
                                     <img
                                         src={base64ToImageUrl(event.eventImage, event.imageMimeType)}
                                         className='card-img-top'
                                         alt={event.eventName}
                                     />
-
-
                                     <div className='card-body'>
                                         <h5 className='card-title'>{event.eventName}</h5>
                                         <p className='card-text'><strong>Date:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
@@ -252,28 +300,66 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
                                         <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
                                         {user && (<>
-                                            {console.log("User ID:", user.id)}
+                                            <p className='card-text'><strong>RSVP status:</strong></p>
+                                            <p>{rsvpStatuses[event.id] || 'No RSVP'}</p>
                                             <button
-                                                className='btn btn-secondary'
-                                                onClick={() => addFavorite(user.id, event.id)}
+                                                className='btn btn-success'
+                                                onClick={() => setShowRsvpPopup(event.id)}
                                             >
-                                                Add to Favorites
+                                                RSVP
                                             </button>
+                                            {favoriteEvents.includes(event.id) ? (
+                                                <button
+                                                    className='btn btn-danger'
+                                                    onClick={() => handleRemoveFavorite(event.id)}
+                                                >
+                                                    Remove Favorite
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className='btn btn-secondary'
+                                                    onClick={() => handleAddFavorite(event.id)}
+                                                >
+                                                    Add to Favorites
+                                                </button>
+                                            )}
                                         </>
                                         )}
                                     </div>
                                 </div>
                             </div>
                         ))}
-
                     </div>
 
                     <div className='mt-3'>
                         <button className='btn btn-secondary me-2' onClick={clearFilters}>Clear Filters</button>
-
                     </div>
                 </div>
             </div>
+
+            {showRsvpPopup && (
+                <div className="rsvp-popup">
+                    <div className="rsvp-popup-content">
+                        <h3>Change RSVP Status</h3>
+                        <select
+                            value={rsvpStatuses[showRsvpPopup] || 'none'}
+                            onChange={(e) => handleRsvpUpdate(showRsvpPopup, e.target.value)}
+                            className="form-select"
+                        >
+                            <option value="none">No RSVP</option>
+                            <option value="attending">Attending</option>
+                            <option value="not attending">Not Attending</option>
+                            <option value="interested">Interested</option>
+                        </select>
+                        <button
+                            onClick={() => setShowRsvpPopup(null)}
+                            className="button-close"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

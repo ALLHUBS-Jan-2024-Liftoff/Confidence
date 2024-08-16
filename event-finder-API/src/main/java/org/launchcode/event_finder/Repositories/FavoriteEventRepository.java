@@ -15,5 +15,7 @@ public interface FavoriteEventRepository extends JpaRepository<FavoriteEvent, Lo
     List<FavoriteEvent> findByUser(User user);
 
     Optional<FavoriteEvent> findByUserAndEvent(User user, Event event);
+
+    void deleteByEventId(Long eventId);
 }
 

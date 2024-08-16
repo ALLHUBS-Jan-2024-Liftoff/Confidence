@@ -1,0 +1,147 @@
+/* Container for the entire dashboard */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f7f7f7;
+    min-height: 100vh;
+  }
+  
+  /* Header styling */
+  .header {
+    width: 100%;
+    background-color: #34495e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+  }
+  
+  /* Main content area */
+  .dashboard-content {
+    width: 80%;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Event table styling */
+  .event-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .event-table th,
+  .event-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .event-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  /* Action buttons within the table */
+  .button-rsvp,
+  .button-remove {
+    padding: 8px 12px;
+    margin: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  /* RSVP Button Styling */
+  .button-rsvp {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .button-rsvp:hover {
+    background-color: #45a049;
+  }
+  
+  /* Delete Button Styling */
+  .button-remove {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .button-remove:hover {
+    background-color: #e53935;
+  }
+  
+  /* RSVP Popup Overlay */
+  .rsvp-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* RSVP Popup Content */
+  .rsvp-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  /* Close Button within Popup */
+  .button-close {
+    margin-top: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .button-close:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Select Dropdown Styling */
+  .form-select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard-content {
+      width: 95%;
+    }
+  
+    .event-table th,
+    .event-table td {
+      padding: 6px;
+    }
+  
+    .button-rsvp,
+    .button-remove {
+      font-size: 10px;
+      padding: 6px 10px;
+    }
+  
+    .rsvp-popup-content {
+      width: 90%;
+    }
+  }
+  

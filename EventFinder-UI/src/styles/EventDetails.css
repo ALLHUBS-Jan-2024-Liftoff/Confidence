@@ -70,4 +70,45 @@ h1 {
 
 }
 
-
+.success-popup, .error-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .success-popup-content, .error-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button-close {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .button-close:hover {
+    background-color: #45a049;
+  }
+  
+  .error-popup-content .button-close {
+    background-color: #e74c3c;
+  }
+  
+  .error-popup-content .button-close:hover {
+    background-color: #c0392b;
+  }
