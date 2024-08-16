@@ -11,10 +11,13 @@ public class RSVP implements Serializable {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event event;
+
 
     @Column(nullable = false)
     private String status; // "attending", "not attending", "interested"

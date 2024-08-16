@@ -10,5 +10,7 @@ public interface RSVPRepository extends JpaRepository<RSVP, Long> {
     List<RSVP> findByEventId(Long eventId);
     List<RSVP> findByUserId(Integer userId);
     Optional<RSVP> findByUserIdAndEventId(Integer userId, Long eventId);
+
+    void deleteByEventId(Long eventId);
 }
 

@@ -61,6 +61,14 @@ public class Event {
 
     private String approvalStatus="pending";
 
+    // Define relationship with FavoriteEvent
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<FavoriteEvent> favoriteEvents = new HashSet<>();
+
+    // Define relationship with RSVP
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RSVP> rsvps = new HashSet<>();
+
     public Event(){}
 
 //    public Event(String eventName, Date eventDate, LocalTime eventTime, String eventLocation, String description, String eventCategory, double eventPrice, @Size(max = 1048576) byte[] eventImage, String imageMimeType) {
