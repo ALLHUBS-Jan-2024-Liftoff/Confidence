@@ -71,7 +71,7 @@ const CreateEvent = () => {
         </label>
         <label>
           Event Date:
-          <input type="datetime-local" name="event_date" value={state.event_date} onChange={handleInputChange} />
+          <input type="date" name="event_date" value={state.event_date} onChange={handleInputChange} />
         </label>
         <label>
           Event Time:
