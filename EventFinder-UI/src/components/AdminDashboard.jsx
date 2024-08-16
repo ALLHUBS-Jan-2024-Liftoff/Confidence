@@ -85,8 +85,8 @@ class AdminDashboard extends Component {
     if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
       errors.eventLocation = 'Event venue name is required.';
     }
-    if (!editEvent.eventLocation || editEvent.eventcityzip.trim() === '') {
-      errors.eventLocation = 'Event zip code is required.';
+    if (!editEvent.eventCityzip || editEvent.eventcityzip.trim() === '') {
+      errors.eventCityzip = 'Event zip code is required.';
     }
     if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
       errors.eventPrice = 'Event price must be a positive number.';
