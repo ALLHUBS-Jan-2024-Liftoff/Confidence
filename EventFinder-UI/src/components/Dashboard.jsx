@@ -59,7 +59,8 @@ const formatTime = (time) => {
                 <th>Event Category</th>
                 <th>Event Date</th>
                 <th>Event Time</th>
-                <th>Event Location</th>
+                <th>Event Venue</th>
+                <th>City and Zip Code</th>
                 <th>Event Price</th>
                 <th>Actions</th>  
               </tr>
@@ -74,6 +75,7 @@ const formatTime = (time) => {
                   <td>{new Date(event.eventDate).toLocaleDateString()}</td>
                   <td>{formatTime(event.eventTime)}</td>
                   <td>{event.eventLocation}</td>
+                  <td>{event.eventCityzip}</td>
                   <td>{event.eventPrice}</td>
                   <td>
                     <button onClick={() => handleRemove(event.id)} className="button-remove">

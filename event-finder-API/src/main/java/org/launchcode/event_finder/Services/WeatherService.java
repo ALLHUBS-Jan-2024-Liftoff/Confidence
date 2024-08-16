@@ -29,7 +29,7 @@ public class WeatherService {
 
     private WeatherDTO mapToWeatherDTO(WeatherApiResponse apiResponse) {
         WeatherDTO weatherDTO = new WeatherDTO();
-        weatherDTO.setLocation(apiResponse.getCity().getName());
+        weatherDTO.setDestination(apiResponse.getCity().getName());
         weatherDTO.setTemp(apiResponse.getList().get(0).getMain().getTemp());
         return weatherDTO;
     }

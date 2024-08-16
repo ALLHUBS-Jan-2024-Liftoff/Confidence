@@ -58,7 +58,7 @@ public class WeatherApiResponse {
                 this.temp = temp;
             }
         }
-
+// Not using "description" yet... but likely to add this and other key/value pairs
         public static class Weather {
             private String description;
 

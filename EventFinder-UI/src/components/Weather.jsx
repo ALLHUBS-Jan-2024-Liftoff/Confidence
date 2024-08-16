@@ -55,7 +55,7 @@ const Weather = () => {
                                 <p>Loading...</p>
                             ) : weatherData ? (
                                 <div>
-                                    <p>In {weatherData.location}</p>
+                                    <p>In {weatherData.destination}, {zipCode}</p>
                                     <p>The temperature in the next three hours is expected to be: {weatherData.temp} °F</p>
                                 </div>
                             ) : (

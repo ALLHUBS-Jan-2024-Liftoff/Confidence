@@ -1,16 +1,16 @@
 package org.launchcode.event_finder.Models.DTO;
 
 public class WeatherDTO {
-    private String location;
+    private String destination;
     private double temp;
 
     // Getters and setters
-    public String getLocation() {
-        return location;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public double getTemp() {
