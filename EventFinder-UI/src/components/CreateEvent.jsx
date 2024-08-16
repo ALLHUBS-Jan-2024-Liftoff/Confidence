@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/CreateEvent.css';
 import { useNavigate } from 'react-router-dom';
+import STL_METRO_ZIPS from '../utilities/MetroZipCodes';
 
 const CreateEvent = () => {
   const [state, setState] = useState({
@@ -19,6 +20,10 @@ const CreateEvent = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const isValidZipCode = (zipCode) => {
+    return STL_METRO_ZIPS.includes(zipCode);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +43,11 @@ const CreateEvent = () => {
     if (!state.event_date.trim()) newErrors.event_date = 'Event date is required.';
     if (!state.event_time.trim()) newErrors.event_time = 'Event time is required.';
     if (!state.event_location.trim()) newErrors.event_location = 'Event venue is required.';
-    if (!state.event_cityzip.trim()) newErrors.event_cityzip = 'Event zip code is required.';
+    if (!state.event_cityzip.trim()) {
+      newErrors.event_cityzip = 'Event zip code is required.';
+    } else if (!isValidZipCode(state.event_cityzip)) {
+      newErrors.event_cityzip = 'Please enter a valid zip code from the St. Louis metro area.';
+    }
     if (!state.event_price || isNaN(state.event_price) || state.event_price <= 0) {
       newErrors.event_price = 'Event price must be a positive number.';
     }
