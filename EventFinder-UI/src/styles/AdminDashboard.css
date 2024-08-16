@@ -208,3 +208,10 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
