@@ -169,6 +169,7 @@ class AdminDashboard extends Component {
                   <th>Event Date</th>
                   <th>Event Time</th>
                   <th>Event Location</th>
+                  <th>Event City and Zip Code</th>
                   <th>Event Price</th>
                   <th>Approval Status</th>
                   <th>Actions</th>
@@ -184,6 +185,7 @@ class AdminDashboard extends Component {
                     <td>{new Date(event.eventDate).toLocaleDateString()}</td>
                     <td>{this.formatTime(event.eventTime)}</td>
                     <td>{event.eventLocation}</td>
+                    <td>{event.eventCityzip}</td>
                     <td>{event.eventPrice}</td>
                     <td>{event.approvalStatus}</td>
                     <td className='actions'>
@@ -256,6 +258,10 @@ class AdminDashboard extends Component {
                   <label>
                     Event Location:
                     <input type="text" name="eventLocation" value={editEvent.eventLocation} onChange={this.handleInputChange} />
+                  </label><br />
+                  <label>
+                    Event City and Zip Code:
+                    <input type="text" name="eventCityzip" value={editEvent.eventCityzip} onChange={this.handleInputChange} />
                   </label><br />
                   <label>
                     Event Price:

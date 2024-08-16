@@ -12,6 +12,7 @@ const CreateEvent = () => {
     event_date: '',
     event_time: '',
     event_location: '',
+    event_cityzip: '',
     event_price: '',
     image: null,
   });
@@ -38,6 +39,7 @@ const CreateEvent = () => {
     formData.append('eventDate', state.event_date);
     formData.append('eventTime', state.event_time);
     formData.append('eventLocation', state.event_location);
+    formData.append('eventCityzip', state.event_cityzip);
     formData.append('eventPrice', state.event_price);
     formData.append('eventImage', state.image);
 
@@ -78,8 +80,12 @@ const CreateEvent = () => {
           <input type="time" name="event_time" value={state.event_time} onChange={handleInputChange} />
         </label>
         <label>
-          Event Location:
+          Event Venue:
           <input type="text" name="event_location" value={state.event_location} onChange={handleInputChange} />
+        </label>
+        <label>
+          Event City and Zip Code:
+          <input type="text" name="event_cityzip" value={state.event_cityzip} onChange={handleInputChange} />
         </label>
         <label>
           Event Price:

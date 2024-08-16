@@ -15,6 +15,7 @@ const EventDetails = () => {
         startDate: '',
         endDate: '',
         location: '',
+        cityzip: '',
         minPrice: '',
         maxPrice: ''
     });
@@ -68,6 +69,11 @@ const EventDetails = () => {
             filtered = filtered.filter(event => event.eventLocation.toLowerCase().includes(filters.location.toLowerCase()));
         }
 
+        // Apply cityzip filter
+        if (filters.cityzip) {
+            filtered = filtered.filter(event => event.eventCityzip.toLowerCase().includes(filters.cityzip.toLowerCase()));
+        }
+
         // Apply price range filter (assuming events have a price field)
         if (filters.minPrice && filters.maxPrice) {
             filtered = filtered.filter(event =>
@@ -92,6 +98,7 @@ const EventDetails = () => {
             const filtered = data.filter(event =>
                 event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.eventLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                event.eventcityzip.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.eventCategory.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setFilteredData(filtered); // Update filteredData based on search term
@@ -105,6 +112,7 @@ const EventDetails = () => {
             startDate: '',
             endDate: '',
             location: '',
+            cityzip: '',
             minPrice: '',
             maxPrice: ''
         });
@@ -188,6 +196,15 @@ const EventDetails = () => {
                             />
                         </div>
                         <div className='col-md-3'>
+                            <input
+                                type='text'
+                                className='form-control'
+                                placeholder='Zip Code'
+                                value={filters.cityzip}
+                                onChange={(e) => setFilters({ ...filters, cityzip: e.target.value })}
+                            />
+                        </div>
+                        <div className='col-md-3'>
                             <div className='input-group'>
                                 <span className='input-group-text'>$</span>
                                 <input
@@ -226,7 +243,8 @@ const EventDetails = () => {
                                         <h5 className='card-title'>{event.eventName}</h5>
                                         <p className='card-text'><strong>Date:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
                                         <p className='card-text'><strong>Time:</strong> {formatTime(event.eventTime)}</p>
-                                        <p className='card-text'><strong>Location:</strong> {event.eventLocation}</p>
+                                        <p className='card-text'><strong>Venue:</strong> {event.eventLocation}</p>
+                                        <p className='card-text'><strong>City and Zip Code:</strong> {event.eventCityzip}</p>
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>

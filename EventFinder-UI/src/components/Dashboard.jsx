@@ -59,7 +59,8 @@ const formatTime = (time) => {
                 <th>Event Category</th>
                 <th>Event Date</th>
                 <th>Event Time</th>
-                <th>Event Location</th>
+                <th>Event Venue</th>
+                <th>City and Zip Code</th>
                 <th>Event Price</th>
                 <th>Actions</th>  
               </tr>
