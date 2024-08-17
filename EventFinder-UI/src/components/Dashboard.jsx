@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useHistory } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import axios from 'axios';
 import '../styles/Dashboard.css';
@@ -9,6 +9,7 @@ const Dashboard = () => {
   const { user, favorites, fetchFavorites, removeFavorite } = useAuth();
   const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to store RSVP statuses
   const [showRsvpPopup, setShowRsvpPopup] = useState(null); // State to manage RSVP popup visibility
+  const history = useHistory();
 
   useEffect(() => {
     if (user) {
@@ -57,6 +58,10 @@ const Dashboard = () => {
     }
   };
 
+  const handleGetForecast = (zipCode) => {
+    history.push(`/weather/${zipCode}`);
+  };
+
   const formatTime = (time) => {
     try {
       if (!Array.isArray(time) || time.length !== 2) {
@@ -89,7 +94,7 @@ const Dashboard = () => {
                 <th>Event Date</th>
                 <th>Event Time</th>
                 <th>Event Venue</th>
-                <th>City and Zip Code</th>
+                <th>Zip Code</th>
                 <th>Event Price</th>
                 <th>RSVP Status</th>
                 <th>Actions</th>
@@ -116,6 +121,12 @@ const Dashboard = () => {
                       className="button-rsvp"
                     >
                       RSVP
+                    </button>
+                    <button
+                      onClick={() => handleGetForecast(event.eventCityzip)}
+                      className="button-forecast"
+                      >
+                      Get Forecast
                     </button>
                     <button
                       onClick={() => handleRemove(event.id)}
