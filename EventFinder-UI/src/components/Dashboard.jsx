@@ -118,6 +118,12 @@ const Dashboard = () => {
                       RSVP
                     </button>
                     <button
+                      className="button-rsvp"
+                      onClick={() => setShowRsvpPopup(event.id)}
+                      >
+                      Get Forecast
+                    </button>
+                    <button
                       onClick={() => handleRemove(event.id)}
                       className="button-remove"
                     >
