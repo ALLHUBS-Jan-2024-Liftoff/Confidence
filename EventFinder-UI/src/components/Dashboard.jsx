@@ -121,12 +121,14 @@ const Dashboard = () => {
                     >
                       RSVP
                     </button>
+
                     <button
                       className="button-rsvp"
                       onClick={() => handleGetForecast(event.eventCityzip)}
                       >
                       Get Forecast
                     </button>
+                    
                     <button
                       onClick={() => handleRemove(event.id)}
                       className="button-remove"
