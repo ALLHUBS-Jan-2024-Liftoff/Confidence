@@ -8,7 +8,6 @@ import { useAuth } from '../auth/AuthContext';
 const EventDetails = () => {
     const [showRsvpPopup, setShowRsvpPopup] = useState(null);
     const [favoriteEvents, setFavoriteEvents] = useState([]); // State to track user's favorite events
-    
     const [data, setData] = useState([]); // State to store fetched event data
     const [filteredData, setFilteredData] = useState([]); // State to store filtered event data
     const [error, setError] = useState(null); // State to handle errors during data fetching
@@ -23,28 +22,52 @@ const EventDetails = () => {
         maxPrice: ''
     });
     const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to manage RSVP status
-    const { user, addFavorite, removeFavorite, fetchFavorites } = useAuth(); // Get user and addFavorite from AuthContext
+    const { user, addFavorite, removeFavorite, } = useAuth(); // Get user and addFavorite from AuthContext
 
     // Fetch data from API on initial component mount
     useEffect(() => {
         fetchData();
         if (user) {
             loadFavorites();
+            fetchRsvpStatuses();
         }
+        
     }, [user]);
 
-       // Function to load user's favorite events
-       // Function to load user's favorite events
-const loadFavorites = async () => {
-    try {
-        const favorites = await fetchFavorites(user.id);
-        // If favorites is undefined, use an empty array as a fallback
-        setFavoriteEvents(favorites ? favorites.map(fav => fav.id) : []);
-    } catch (error) {
-        console.error('Error fetching favorite events:', error);
-        setFavoriteEvents([]); // Ensure the state is at least an empty array to prevent further errors
-    }
-};
+    const fetchFavorites = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/users/${userId}/favorites`);
+            return Array.isArray(response.data) ? response.data : [];  // Ensure the response is an array
+        } catch (error) {
+            console.error('Error fetching favorites:', error);
+            return [];  // Return an empty array on error
+        }
+    };
+
+    // Load user's favorite events
+    const loadFavorites = async () => {
+        try {
+            const favorites = await fetchFavorites(user.id);
+            const favoriteEventIds = favorites.map(fav => fav.id);
+            setFavoriteEvents(favoriteEventIds);
+        } catch (error) {
+            console.error('Error fetching favorite events:', error);
+            setFavoriteEvents([]); // Ensure state is at least an empty array to prevent further errors
+        }
+    };
+
+    const fetchRsvpStatuses = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/users/${user.id}/rsvps`);
+            const rsvpMap = {};
+            response.data.forEach(rsvp => {
+                rsvpMap[rsvp.event.id] = rsvp.status;
+            });
+            setRsvpStatuses(rsvpMap);
+        } catch (error) {
+            console.error('Error fetching RSVP statuses:', error);
+        }
+    };
 
     // Function to fetch event data from API
     const fetchData = () => {
@@ -69,9 +92,9 @@ const loadFavorites = async () => {
             console.error('An error occurred while adding the event to favorites.', error);
         }
     };
-    
-      // Function to handle removing an event from favorites
-      const handleRemoveFavorite = async (eventId) => {
+
+    // Function to handle removing an event from favorites
+    const handleRemoveFavorite = async (eventId) => {
         try {
             await removeFavorite(user.id, eventId);
             setFavoriteEvents(favoriteEvents.filter(id => id !== eventId)); // Remove the event ID from the favoriteEvents array
@@ -79,9 +102,7 @@ const loadFavorites = async () => {
             console.error('An error occurred while removing the event from favorites.', error);
         }
     };
-    
-    
-    
+
     // Effect to apply filters whenever filters state changes
     useEffect(() => {
         applyFilters();
@@ -138,7 +159,7 @@ const loadFavorites = async () => {
             const filtered = data.filter(event =>
                 event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.eventLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                event.eventcityzip.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                event.eventCityzip.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.eventCategory.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setFilteredData(filtered); // Update filteredData based on search term
