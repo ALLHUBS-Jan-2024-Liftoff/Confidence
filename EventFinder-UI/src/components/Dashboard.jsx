@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import axios from 'axios';
 import '../styles/Dashboard.css';
@@ -9,6 +9,7 @@ const Dashboard = () => {
   const { user, favorites, fetchFavorites, removeFavorite } = useAuth();
   const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to store RSVP statuses
   const [showRsvpPopup, setShowRsvpPopup] = useState(null); // State to manage RSVP popup visibility
+  const [openSubmitPopup, setOpenSubmitPopup] = useState(false); // State to open submit event popup form
 
   useEffect(() => {
     if (user) {
@@ -79,70 +80,78 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="header">Dashboard</header>
-      <div className="dashboard-content">
-        <h2>Your Favorite Events</h2>
-        {favorites.length > 0 ? (
-          <table className="event-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Event Name</th>
-                <th>Description</th>
-                <th>Event Category</th>
-                <th>Event Date</th>
-                <th>Event Time</th>
-                <th>Event Venue</th>
-                <th>Zip Code</th>
-                <th>Event Price</th>
-                <th>RSVP Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {favorites.map((event) => (
-                <tr key={event.id}>
-                  <td>{event.id}</td>
-                  <td>{event.eventName}</td>
-                  <td>{event.description}</td>
-                  <td>{event.eventCategory}</td>
-                  <td>{new Date(event.eventDate).toLocaleDateString()}</td>
-                  <td>{formatTime(event.eventTime)}</td>
-                  <td>{event.eventLocation}</td>
-                  <td>{event.eventCityzip}</td>
-                  <td>{event.eventPrice}</td>
-                  <td>
-                    <p>{rsvpStatuses[event.id] || 'No RSVP'}</p>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => setShowRsvpPopup(event.id)}
-                      className="button-rsvp"
-                    >
-                      RSVP
-                    </button>
-                    <button
-                      onClick={() => handleGetForecast(event.eventCityzip)}
-                      className="button-weather"
-                      >
-                      Get Forecast
-                    </button>
-                    <button
-                      onClick={() => handleRemove(event.id)}
-                      className="button-remove"
-                    >
-                      Delete
-                    </button>
-                  </td>
+      <header className="header">Dashboard
+      </header>
+      <h2>Your Favorite Events</h2>
+      <div className="dashboard">
+        <aside className="sidebar">
+          <ul>
+            <li>
+              <Link to="/submit-event">Submit Event</Link> 
+            </li>
+          </ul>
+        </aside>        
+          {favorites.length > 0 ? (
+            <main className="content">
+            <table className="event-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Event Name</th>
+                  <th>Description</th>
+                  <th>Event Category</th>
+                  <th>Event Date</th>
+                  <th>Event Time</th>
+                  <th>Event Venue</th>
+                  <th>Zip Code</th>
+                  <th>Event Price</th>
+                  <th>RSVP Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>You have no favorite events yet.</p>
-        )}
+              </thead>
+              <tbody>
+                {favorites.map((event) => (
+                  <tr key={event.id}>
+                    <td>{event.id}</td>
+                    <td>{event.eventName}</td>
+                    <td>{event.description}</td>
+                    <td>{event.eventCategory}</td>
+                    <td>{new Date(event.eventDate).toLocaleDateString()}</td>
+                    <td>{formatTime(event.eventTime)}</td>
+                    <td>{event.eventLocation}</td>
+                    <td>{event.eventCityzip}</td>
+                    <td>{event.eventPrice}</td>
+                    <td>
+                      <p>{rsvpStatuses[event.id] || 'No RSVP'}</p>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => setShowRsvpPopup(event.id)}
+                        className="button-rsvp"
+                      >
+                        RSVP
+                      </button>
+                      <button
+                        onClick={() => handleGetForecast(event.eventCityzip)}
+                        className="button-weather"
+                        >
+                        Get Forecast
+                      </button>
+                      <button
+                        onClick={() => handleRemove(event.id)}
+                        className="button-remove"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            </main>) : (
+            <p>You have no favorite events yet.</p>
+          )}
       </div>
-
       {showRsvpPopup && (
         <div className="rsvp-popup">
           <div className="rsvp-popup-content">
