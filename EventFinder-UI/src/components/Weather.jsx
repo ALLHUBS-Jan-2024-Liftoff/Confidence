@@ -1,27 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Weather.css';
 import { getWeather } from '../services/WeatherService';
-import STL_METRO_ZIPS from '../utilities/MetroZipCodes';
 
 const Weather = () => {
+    const {zipCode} = useParams();
     const [weatherData, setWeatherData] = useState(null);
-    const [zipCode, setZipCode] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const isValidZipCode = (zipCode) => {
-        return STL_METRO_ZIPS.includes(zipCode);
-    };
-
-    const handleGetWeather = () => {
-        if (zipCode.trim() === '') {
-            console.error('Please enter a valid zip code.');
-            return;
-        }
-
-        setLoading(true);
-
-        if (isValidZipCode(zipCode)) {
+    useEffect(() => {
+        if (zipCode) {
+            setLoading(true);
             getWeather(zipCode)
                 .then((data) => {
                     setWeatherData(data);
@@ -31,11 +21,8 @@ const Weather = () => {
                     console.error('Error fetching weather data:', error);
                     setLoading(false);
                 });
-        } else {
-            alert('Please enter a valid zip code from the St. Louis metro area.');
-            setLoading(false); 
         }
-    };
+    }, [zipCode]);     
 
     return (
         <div className='container py-5'>
@@ -43,13 +30,6 @@ const Weather = () => {
                 <div className='card-body'>
                     <div className='mb-3'>
                         <h1 className='text-primary'>Event Weather</h1>
-                        <input 
-                            type="text" 
-                            placeholder="Enter zip code" 
-                            value={zipCode} 
-                            onChange={(e) => setZipCode(e.target.value)}
-                        />
-                        <button onClick={handleGetWeather} className="btn btn-primary mt-2">Get Weather</button>
                         <div className="mt-4">
                             {loading ? (
                                 <p>Loading...</p>

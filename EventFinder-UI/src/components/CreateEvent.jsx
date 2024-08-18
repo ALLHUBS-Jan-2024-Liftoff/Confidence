@@ -155,7 +155,7 @@ const CreateEvent = () => {
           {errors.event_location && <span className="error">{errors.event_location}</span>}
         </label>
         <label>
-          Event City and Zip Code:
+          Event Zip Code:
           <input 
           type="text" 
           name="event_cityzip" 
