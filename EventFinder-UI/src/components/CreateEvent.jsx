@@ -126,6 +126,7 @@ const CreateEvent = () => {
         </label>
         <label>
           Event Date:
+
           <input
             type="date"
             name="event_date"

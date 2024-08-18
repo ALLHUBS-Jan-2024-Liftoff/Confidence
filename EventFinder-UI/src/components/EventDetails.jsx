@@ -318,8 +318,8 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>
 
-                                        <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p>
-                                        <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button>
+                                       {/* <p className='card-text'><strong>Approval Status:</strong> {event.approvalStatus}</p> */}
+                                        {/* <button className='btn btn-primary' onClick={() => fetchAndUpdateApprovalStatus(event.id)}>Approve Event</button> */}
                                         {user && (<>
                                             <p className='card-text'><strong>RSVP status:</strong></p>
                                             <p>{rsvpStatuses[event.id] || 'No RSVP'}</p>
