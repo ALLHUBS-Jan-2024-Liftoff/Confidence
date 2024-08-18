@@ -187,4 +187,4 @@ const SubmitEvent = () => {
   );
 };
 
-export default CreateEvent;
+export default SubmitEvent;

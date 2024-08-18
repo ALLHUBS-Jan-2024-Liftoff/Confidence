@@ -9,6 +9,7 @@ const Dashboard = () => {
   const { user, favorites, fetchFavorites, removeFavorite } = useAuth();
   const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to store RSVP statuses
   const [showRsvpPopup, setShowRsvpPopup] = useState(null); // State to manage RSVP popup visibility
+  const [openSubmitPopup, setOpenSubmitPopup] = useState(false); // State to open submit event popup form
 
   useEffect(() => {
     if (user) {

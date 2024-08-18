@@ -71,7 +71,8 @@ import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
 import Contact from './components/Contact';
 import Dashboard from './components/Dashboard';
-import CreateEvent from './components/CreateEvent'
+import CreateEvent from './components/CreateEvent';
+import SubmitEvent from './components/SubmitEvent'
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
