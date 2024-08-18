@@ -123,7 +123,7 @@ const Dashboard = () => {
                     </button>
                     <button
                       onClick={() => handleGetForecast(event.eventCityzip)}
-                      className="button-rsvp"
+                      className="button-weather"
                       >
                       Get Forecast
                     </button>

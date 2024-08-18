@@ -46,7 +46,8 @@
   
   /* Action buttons within the table */
   .button-rsvp,
-  .button-remove {
+  .button-remove,
+  .button-weather {
     padding: 8px 12px;
     margin: 4px;
     border: none;
@@ -64,6 +65,16 @@
   
   .button-rsvp:hover {
     background-color: #45a049;
+  }
+
+  /* Weather Button Styling */
+  .button-weather {
+    background-color: #4605eb;
+    color: white;
+  }
+  
+  .button-weather:hover {
+    background-color: #0778ea;
   }
   
   /* Delete Button Styling */
