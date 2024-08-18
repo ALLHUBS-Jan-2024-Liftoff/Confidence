@@ -19,7 +19,8 @@ const EventDetails = () => {
         location: '',
         cityzip: '',
         minPrice: '',
-        maxPrice: ''
+        maxPrice: '',
+        approvalStatus: ''
     });
     const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to manage RSVP status
     const { user, addFavorite, removeFavorite, } = useAuth(); // Get user and addFavorite from AuthContext
@@ -74,8 +75,13 @@ const EventDetails = () => {
         axios.get('http://localhost:8080/api/events')
             .then(res => {
                 console.log('Fetched data:', res.data); // Log the fetched data
-                setData(res.data); // Set fetched data to state
-                setFilteredData(res.data); // Initially set filteredData to all data
+                // ieva changed the fetch code, see below:
+                // Former code: setData(res.data); // Set fetched data to state
+                // Former code: setFilteredData(res.data); // Initially set filteredData to all data
+                // New code to lmit home page content to moderated events only
+                const approvedEvents = res.data.filter(event => event.approvalStatus === 'Approved');
+                setData(approvedEvents); // Set approved fetched data to state
+                setFilteredData(approvedEvents); // Initially set filteredData to approved data
             })
             .catch(err => {
                 console.error('Error fetching data:', err);
