@@ -71,13 +71,9 @@ import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
 import Contact from './components/Contact';
 import Dashboard from './components/Dashboard';
-<<<<<<< HEAD
 import CreateEvent from './components/CreateEvent';
-import SubmitEvent from './components/SubmitEvent'
-=======
-import CreateEvent from './components/CreateEvent'
 import Messages from './components/Messages';
->>>>>>> origin/main
+import SubmitEvent from './components/SubmitEvent'
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -100,11 +96,8 @@ function App() {
           <Route path="/weather/:zipCode" element={<Weather />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/create-event" element={<CreateEvent />} />
-<<<<<<< HEAD
           <Route path="/submit-event" element={<SubmitEvent />} />
-=======
           <Route path="/messages" element={<Messages />} />
->>>>>>> origin/main
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
