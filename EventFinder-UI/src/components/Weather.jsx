@@ -41,7 +41,7 @@ const Weather = () => {
                                 </div>
                             ) : (
                                 <div>
-                                    <p>Currenlty, no weather data is available for {weatherData.destination}, {zipCode}</p>
+                                    <p>Currently, no weather data is available for {weatherData.destination}, {zipCode}</p>
                                     <p>Please try again later.</p>
                                 </div>
                             )}
