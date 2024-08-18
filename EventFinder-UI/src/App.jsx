@@ -94,6 +94,7 @@ function App() {
           <Route path="/weather/:zipCode" element={<Weather />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/create-event" element={<CreateEvent />} />
+          <Route path="/submit-event" element={<SubmitEvent />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
