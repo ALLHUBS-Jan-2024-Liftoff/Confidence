@@ -1,7 +1,8 @@
 
 .create-event-container {
-    max-width: 600px;
-    margin: 20px auto;
+    max-width: 1000px;
+    /* margin: 20px auto; */
+    margin-left: 250px;
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 8px;
