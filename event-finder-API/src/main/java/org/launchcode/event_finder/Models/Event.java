@@ -33,8 +33,11 @@ public class Event {
     @NotNull(message = "Please Enter Event Time.")
     private LocalTime eventTime;
 
-    @NotBlank(message = "Event location must not be empty")
+    @NotBlank(message = "Event venue must not be empty")
     private String eventLocation;
+
+    @NotBlank(message = "Event zip code must not be empty")
+    private String eventCityzip;
 
     @NotBlank(message = "Please provide Event Description.")
     @Size(min=5, message = "Description must be at least 5 characters.")
@@ -60,6 +63,14 @@ public class Event {
 
 
     private String approvalStatus="pending";
+
+    // Define relationship with FavoriteEvent
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<FavoriteEvent> favoriteEvents = new HashSet<>();
+
+    // Define relationship with RSVP
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RSVP> rsvps = new HashSet<>();
 
     public Event(){}
 
@@ -118,6 +129,14 @@ public class Event {
 
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
+    }
+
+    public String getEventCityzip() {
+        return eventCityzip;
+    }
+
+    public void setEventCityzip(String eventCityzip) {
+        this.eventCityzip = eventCityzip;
     }
 
     public String getDescription() {

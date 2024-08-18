@@ -27,7 +27,7 @@ public class WebApplicationConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationFilter())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login", "/register", "/css/**", "/js/**","/");
+                .excludePathPatterns("/login", "/register", "/css/**", "/js/**","/","/api/**");
 
     }
 
@@ -38,6 +38,10 @@ public class WebApplicationConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
+
+        registry.addMapping("/**")
+                .allowedOrigins("*") // Allow from any origin
+                .allowedMethods("GET");
     }
 
     @Override

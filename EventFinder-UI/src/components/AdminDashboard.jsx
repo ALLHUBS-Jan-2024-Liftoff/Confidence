@@ -3,9 +3,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import '../styles/AdminDashboard.css';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import STL_METRO_ZIPS from '../utilities/MetroZipCodes';
+
+const isValidZipCode = (zipCode) => {
+  return STL_METRO_ZIPS.includes(zipCode);
+};
 
 class AdminDashboard extends Component {
-
   
   state = {
     events: [],
@@ -18,7 +22,8 @@ class AdminDashboard extends Component {
     pendingCount: 0,
     rejectedCount: 0,
     images: {}, 
-    error: null
+    error: null,
+    editErrors: {}
   };
 
   componentDidMount() {
@@ -52,7 +57,7 @@ class AdminDashboard extends Component {
   };
 
   toggleEditPopup = (event) => {
-    this.setState({ showEditPopup: !this.state.showEditPopup, editEvent: event });
+    this.setState({ showEditPopup: !this.state.showEditPopup, editEvent: event ,editErrors:{}});
   };
 
   handleInputChange = (e) => {
@@ -62,7 +67,51 @@ class AdminDashboard extends Component {
     this.setState({ editEvent: { ...editEvent, [name]: value } });
   };
 
+  validateEditForm = () => {
+    const { editEvent } = this.state;
+    const errors = {};
+  
+    if (!editEvent.eventName || editEvent.eventName.trim() === '') {
+      errors.eventName = 'Event name is required.';
+    }
+    if (!editEvent.description || editEvent.description.trim() === '') {
+      errors.description = 'Description is required.';
+    }
+    if (!editEvent.eventCategory || editEvent.eventCategory.trim() === '') {
+      errors.eventCategory = 'Event category is required.';
+    }
+    if (!editEvent.eventDate) {
+      errors.eventDate = 'Event date is required.';
+    }
+    if (!editEvent.eventTime) {
+      errors.eventTime = 'Event time is required.';
+    }
+    if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
+      errors.eventLocation = 'Event venue name is required.';
+    }
+    if (!editEvent.eventCityzip || editEvent.eventCityzip.trim() === '') {
+      errors.eventCityzip = 'Event zip code is required.';
+    } else if (!isValidZipCode(editEvent.eventCityzip)) {
+      errors.eventCityzip = 'Please enter a valid zip code from the St. Louis metro area.';
+    }
+    if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
+      errors.eventPrice = 'Event price must be a positive number.';
+    }
+    if (!editEvent.approvalStatus || editEvent.approvalStatus.trim() === '') {
+      errors.approvalStatus = 'Approval status is required.';
+    }
+  
+    this.setState({ editErrors: errors });
+    return Object.keys(errors).length === 0;
+  };
+  
+
   saveChanges = async () => {
+
+    if (!this.validateEditForm()) {
+      return;
+    }
+
     const { editEvent } = this.state;
   
     try {
@@ -119,7 +168,7 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount,images } = this.state;
+    const { filteredEvents, filter, showEditPopup, editEvent,allCount,approvedCount,pendingCount,rejectedCount,images,editErrors } = this.state;
 
     return (
       
@@ -168,7 +217,8 @@ class AdminDashboard extends Component {
                   <th>Event Category</th>
                   <th>Event Date</th>
                   <th>Event Time</th>
-                  <th>Event Location</th>
+                  <th>Event Venue</th>
+                  <th>Event Zip Code</th>
                   <th>Event Price</th>
                   <th>Approval Status</th>
                   <th>Actions</th>
@@ -184,7 +234,8 @@ class AdminDashboard extends Component {
                     <td>{new Date(event.eventDate).toLocaleDateString()}</td>
                     <td>{this.formatTime(event.eventTime)}</td>
                     <td>{event.eventLocation}</td>
-                    <td>{event.eventPrice}</td>
+                    <td>{event.eventCityzip}</td>
+                    <td>${event.eventPrice.toFixed(2)}</td>
                     <td>{event.approvalStatus}</td>
                     <td className='actions'>
                       <button className="button-edit" onClick={() => this.toggleEditPopup(event)}>View/Edit</button>
@@ -219,6 +270,7 @@ class AdminDashboard extends Component {
                   <label>
                     Event Name:
                     <input type="text" name="eventName" value={editEvent.eventName} onChange={this.handleInputChange} />
+                    {editErrors.eventName && <span className="error">{editErrors.eventName}</span>}                   
                   </label><br />
                   <label>
                     Description:
@@ -230,10 +282,12 @@ class AdminDashboard extends Component {
                       cols="50" 
                       style={{ width: '100%' }}
                     />
+                    {editErrors.description && <span className="error">{editErrors.description}</span>}
                   </label><br />
                   <label>
                     Event Category:
                     <input type="text" name="eventCategory" value={editEvent.eventCategory} onChange={this.handleInputChange} />
+                    {editErrors.eventCategory && <span className="error">{editErrors.eventCategory}</span>}
                   </label><br />
                   <label>
                     Event Date:
@@ -243,6 +297,7 @@ class AdminDashboard extends Component {
                       value={editEvent.eventDate ? new Date(editEvent.eventDate).toISOString().slice(0, 10) : ''}
                       onChange={this.handleInputChange}
                     />
+                    {editErrors.eventDate && <span className="error">{editErrors.eventDate}</span>}
                   </label><br />
                   <label>
                     Event Time:
@@ -252,14 +307,22 @@ class AdminDashboard extends Component {
                      value={editEvent.eventTime ? editEvent.eventTime.slice(0, 5) : ''}
                      onChange={this.handleInputChange}
                     />
+                    {editErrors.eventTime && <span className="error">{editErrors.eventTime}</span>}
                   </label><br />
                   <label>
-                    Event Location:
+                    Event Venue:
                     <input type="text" name="eventLocation" value={editEvent.eventLocation} onChange={this.handleInputChange} />
+                    {editErrors.eventLocation && <span className="error">{editErrors.eventLocation}</span>} 
+                  </label><br />
+                  <label>
+                    Event Zip Code:
+                    <input type="text" name="eventCityzip" value={editEvent.eventCityzip} onChange={this.handleInputChange} />
+                    {editErrors.eventCityzip && <span className="error">{editErrors.eventCityzip}</span>} 
                   </label><br />
                   <label>
                     Event Price:
                     <input type="number" name="eventPrice" value={editEvent.eventPrice} onChange={this.handleInputChange} />
+                    {editErrors.eventPrice && <span className="error">{editErrors.eventPrice}</span>} 
                   </label><br />
                   <label>
                     Approval Status:
@@ -268,6 +331,7 @@ class AdminDashboard extends Component {
                       <option value="Pending">Pending</option>
                       <option value="Rejected">Rejected</option>
                     </select>
+                    {editErrors.approvalStatus && <span className="error">{editErrors.approvalStatus}</span>}
                   </label><br />
                   <button type="button" onClick={this.saveChanges}>Save</button>
                   <button type="button" onClick={this.toggleEditPopup}>Cancel</button>

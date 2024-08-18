@@ -91,8 +91,7 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/weather" element={<Weather />} />
-          
+          <Route path="/weather/:zipCode" element={<Weather />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="*" element={<Navigate to="/" />} />

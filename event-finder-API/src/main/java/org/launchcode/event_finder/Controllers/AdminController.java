@@ -48,6 +48,7 @@ public class AdminController {
             existingEvent.setEventDate(event.getEventDate( ));
             existingEvent.setEventTime(event.getEventTime( ));
             existingEvent.setEventLocation(event.getEventLocation( ));
+            existingEvent.setEventCityzip(event.getEventCityzip( ));
             existingEvent.setDescription(event.getDescription( ));
             existingEvent.setEventCategory(event.getEventCategory());
             existingEvent.setEventPrice(event.getEventPrice());
@@ -76,6 +77,7 @@ public class AdminController {
             @RequestParam("eventDate")@DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate,
             @RequestParam("eventTime") LocalTime eventTime,
             @RequestParam("eventLocation") String eventLocation,
+            @RequestParam("eventCityzip") String eventCityzip,
             @RequestParam("description") String description,
             @RequestParam("eventCategory") String eventCategory,
             @RequestParam("eventPrice") double eventPrice,
@@ -87,6 +89,7 @@ public class AdminController {
         event.setEventDate(eventDate);
         event.setEventTime(eventTime);
         event.setEventLocation(eventLocation);
+        event.setEventCityzip(eventCityzip);
         event.setDescription(description);
         event.setEventCategory(eventCategory);
         event.setEventPrice(eventPrice);

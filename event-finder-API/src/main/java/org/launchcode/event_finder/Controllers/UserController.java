@@ -4,12 +4,15 @@ package org.launchcode.event_finder.Controllers;
 
 import org.launchcode.event_finder.Models.Event;
 import org.launchcode.event_finder.Models.FavoriteEvent;
+import org.launchcode.event_finder.Models.RSVP;
 import org.launchcode.event_finder.Models.User;
 import org.launchcode.event_finder.Repositories.EventRepository;
 import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
+import org.launchcode.event_finder.Repositories.RSVPRepository;
 import org.launchcode.event_finder.Repositories.UserRepository;
 import org.launchcode.event_finder.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jdbc.core.JdbcAggregateOperations;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
@@ -53,8 +56,11 @@ public class UserController {
         try {
             userService.addFavoriteEvent(userId, eventId);
             return ResponseEntity.ok("Favorite added successfully");
+        } catch (DataIntegrityViolationException e) {
+            // This exception typically occurs when a duplicate entry is attempted
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This event is already in your favorites list.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -73,7 +79,14 @@ public class UserController {
 
         return ResponseEntity.ok(favoriteEvents); // Return as JSON
     }
+    @Autowired
+    private RSVPRepository rsvpRepository;
 
+    @GetMapping("/{userId}/rsvps")
+    public ResponseEntity<List<RSVP>> getUserRsvps(@PathVariable Integer userId) {
+        List<RSVP> rsvps = rsvpRepository.findByUserId(userId);
+        return ResponseEntity.ok(rsvps);
+    }
 
     @DeleteMapping("/{userId}/favorites/{eventId}")
     public void removeFavoriteEvent(@PathVariable Integer userId, @PathVariable Long eventId) {

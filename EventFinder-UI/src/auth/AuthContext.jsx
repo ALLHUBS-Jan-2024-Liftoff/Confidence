@@ -30,31 +30,31 @@ export const AuthProvider = ({ children }) => {
   };
   const fetchFavorites = async (userId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/users/${userId}/favorites`, {
-            headers: {
-                'Cache-Control': 'no-cache',  // Prevent caching
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            },
-            params: {
-                t: new Date().getTime()  // Add a timestamp to prevent caching
-            }
-        });
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/favorites`, {
+        headers: {
+          'Cache-Control': 'no-cache',  // Prevent caching
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        params: {
+          t: new Date().getTime()  // Add a timestamp to prevent caching
+        }
+      });
 
-        console.log('Fetched favorites:', response.data);
+      console.log('Fetched favorites:', response.data);
 
-        // Check if the response data is an array and set it to favorites
-        setFavorites(Array.isArray(response.data) ? response.data : []);
+      // Check if the response data is an array and set it to favorites
+      setFavorites(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-        console.error('Error fetching favorites:', error);
+      console.error('Error fetching favorites:', error);
     }
-};
+  };
 
-useEffect(() => {
-  if (user && favorites.length === 0) {
-    fetchFavorites(user.id);
-  }
-}, [user, fetchFavorites]);
+  useEffect(() => {
+    if (user && favorites.length === 0) {
+      fetchFavorites(user.id);
+    }
+  }, [user, favorites.length]);
 
   const fetchUser = async () => {
     try {

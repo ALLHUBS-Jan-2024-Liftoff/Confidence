@@ -1,7 +1,14 @@
 package org.launchcode.event_finder.Controllers;
 
+import org.launchcode.event_finder.Models.RSVP;
+import org.launchcode.event_finder.Models.User;
 import org.launchcode.event_finder.Repositories.EventRepository;
+import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
+import org.launchcode.event_finder.Repositories.RSVPRepository;
+import org.launchcode.event_finder.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.core.JdbcAggregateOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.launchcode.event_finder.Models.Event;
@@ -15,10 +22,18 @@ import java.util.Optional;
 public class EventController {
 
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
+    private final FavoriteEventRepository favoriteEventRepository;
+
+    private final RSVPRepository rsvpRepository;
     @Autowired
-    public EventController(EventRepository eventRepository) {
+    public EventController(EventRepository eventRepository, UserRepository userRepository, FavoriteEventRepository favoriteEventRepository, RSVPRepository rsvpRepository) {
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
+        this.favoriteEventRepository = favoriteEventRepository;
+        this.rsvpRepository = rsvpRepository;
+
     }
 
     // Get all events
@@ -45,6 +60,43 @@ public class EventController {
             return ResponseEntity.ok(eventOptional.get( ));
         } else {
             return ResponseEntity.notFound( ).build( );
+        }
+    }
+
+    @PostMapping("/{eventId}/rsvp")
+    public ResponseEntity<RSVP> rsvpToEvent(@PathVariable Long eventId, @RequestParam Integer userId, @RequestParam String status) {
+        Optional<Event> event = eventRepository.findById(eventId);
+
+        Optional<User> user = userRepository.findById(userId);
+
+        if (event.isPresent() && user.isPresent()) {
+            RSVP rsvp = rsvpRepository.findByUserIdAndEventId(userId, eventId)
+                    .orElse(new RSVP());
+            rsvp.setEvent(event.get());
+            rsvp.setUser(user.get());
+            rsvp.setStatus(status);
+            rsvpRepository.save(rsvp);
+            return ResponseEntity.ok(rsvp);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) {
+        try {
+            // Delete related RSVP entries
+            rsvpRepository.deleteByEventId(eventId);
+
+            // Delete related favorite entries
+            favoriteEventRepository.deleteByEventId(eventId);
+
+            // Delete the event itself
+            eventRepository.deleteById(eventId);
+
+            return ResponseEntity.ok("Event deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting the event: " + e.getMessage());
         }
     }
 }
