@@ -313,7 +313,7 @@ const EventDetails = () => {
                                         <p className='card-text'><strong>Date:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
                                         <p className='card-text'><strong>Time:</strong> {formatTime(event.eventTime)}</p>
                                         <p className='card-text'><strong>Venue:</strong> {event.eventLocation}</p>
-                                        <p className='card-text'><strong>City and Zip Code:</strong> {event.eventCityzip}</p>
+                                        <p className='card-text'><strong>Zip Code:</strong> {event.eventCityzip}</p>
                                         <p className='card-text'><strong>Description:</strong> {event.description}</p>
                                         <p className='card-text'><strong>Category:</strong> {event.eventCategory}</p>
                                         <p className='card-text'><strong>Price:</strong> ${event.eventPrice.toFixed(2)}</p>

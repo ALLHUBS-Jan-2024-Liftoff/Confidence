@@ -57,6 +57,10 @@ const Dashboard = () => {
     }
   };
 
+  const handleGetForecast = (zipCode) => {
+    navigate(`/weather/${zipCode}`);
+  };
+
   const formatTime = (time) => {
     try {
       if (!Array.isArray(time) || time.length !== 2) {
@@ -89,7 +93,7 @@ const Dashboard = () => {
                 <th>Event Date</th>
                 <th>Event Time</th>
                 <th>Event Venue</th>
-                <th>City and Zip Code</th>
+                <th>Zip Code</th>
                 <th>Event Price</th>
                 <th>RSVP Status</th>
                 <th>Actions</th>
@@ -116,6 +120,12 @@ const Dashboard = () => {
                       className="button-rsvp"
                     >
                       RSVP
+                    </button>
+                    <button
+                      onClick={() => handleGetForecast(event.eventCityzip)}
+                      className="button-weather"
+                      >
+                      Get Forecast
                     </button>
                     <button
                       onClick={() => handleRemove(event.id)}

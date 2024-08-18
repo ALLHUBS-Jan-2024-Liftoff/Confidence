@@ -16,7 +16,6 @@ const NavBar = () => {
             )}
             <li><Link to="/dashboard">Dashboard</Link></li>
             <li><a href="#logout" onClick={logout}>Logout</a></li>
-            <li><Link to="/weather">Weather</Link></li>
           </>
         ) : (
           <>
