@@ -204,6 +204,9 @@ class AdminDashboard extends Component {
               <li>
                   <Link to="/create-event">Create Event</Link> 
               </li>
+              <li>
+                  <Link to="/messages">Messages</Link> 
+              </li>
               </ul>
           </aside>
           <main className="content">
