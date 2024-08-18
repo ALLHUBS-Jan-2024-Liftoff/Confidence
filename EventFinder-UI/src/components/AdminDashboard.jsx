@@ -218,7 +218,7 @@ class AdminDashboard extends Component {
                   <th>Event Date</th>
                   <th>Event Time</th>
                   <th>Event Venue</th>
-                  <th>Event City and Zip Code</th>
+                  <th>Event Zip Code</th>
                   <th>Event Price</th>
                   <th>Approval Status</th>
                   <th>Actions</th>
@@ -315,7 +315,7 @@ class AdminDashboard extends Component {
                     {editErrors.eventLocation && <span className="error">{editErrors.eventLocation}</span>} 
                   </label><br />
                   <label>
-                    Event City and Zip Code:
+                    Event Zip Code:
                     <input type="text" name="eventCityzip" value={editEvent.eventCityzip} onChange={this.handleInputChange} />
                     {editErrors.eventCityzip && <span className="error">{editErrors.eventCityzip}</span>} 
                   </label><br />
