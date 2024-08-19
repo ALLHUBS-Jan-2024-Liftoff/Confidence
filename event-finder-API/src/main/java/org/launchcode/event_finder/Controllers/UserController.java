@@ -81,6 +81,41 @@ public class UserController {
 
         return ResponseEntity.ok(favoriteEvents); // Return as JSON
     }
+
+
+    @PostMapping("/{userId}/submissions/{eventId}")
+    public ResponseEntity<?> addSubmittedEvent(@PathVariable Integer userId, @PathVariable Long eventId) {
+        if (userId == null || eventId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID and Event ID must not be null");
+        }
+
+        try {
+            userService.addSubmittedEvent(userId, eventId);
+            return ResponseEntity.ok("Submission added successfully");
+        } catch (DataIntegrityViolationException e) {
+            // This exception typically occurs when a duplicate entry is attempted
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This event has already been submitted.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{userId}/submissions")
+    public ResponseEntity<List<Event>> getSubmittedEvents(@PathVariable Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Event> submittedEvents = submissionRepository.findByUser(user)
+                .stream()
+                .map(SubmittedEvent::getEvent)
+                .collect(Collectors.toList());
+
+        System.out.println("Events for user " + userId + ": " + submittedEvents);
+
+
+        return ResponseEntity.ok(submittedEvents); // Return as JSON
+    }
+
     @Autowired
     private RSVPRepository rsvpRepository;
 
