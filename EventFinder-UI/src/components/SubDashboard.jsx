@@ -162,32 +162,10 @@ const SubDashboard = () => {
     <div className="admin-dashboard-container">
       <header className="header">Dashboard
       </header>
-      <div className="tiles-container">
-        <div className="tile all" onClick={() => filterEvents('All')}>
-          <h3>All</h3>
-          <p>{allCount}</p>
-        </div>
-        <div className="tile approved" onClick={() => filterEvents('Approved')}>
-          <h3>Approved</h3>
-          <p>{approvedCount}</p>
-        </div>
-        <div className="tile pending" onClick={() => filterEvents('Pending')}>
-          <h3>Pending</h3>
-          <p>{pendingCount}</p>
-        </div>
-        <div className="tile rejected" onClick={() => filterEvents('Rejected')}>
-          <h3>Rejected</h3>
-          <p>{rejectedCount}</p>
-        </div>
-      </div>
       <h2>Your Event Submissions</h2>
       <div className="admin-dashboard">
         <aside className="sidebar">
           <ul>
-            <li className={filter === 'All' ? 'active' : ''} onClick={() => filterEvents('All')}>All</li>
-            <li className={filter === 'Approved' ? 'active' : ''} onClick={() => filterEvents('Approved')}>Approved</li>
-            <li className={filter === 'Pending' ? 'active' : ''} onClick={() => filterEvents('Pending')}>Pending</li>
-            <li className={filter === 'Rejected' ? 'active' : ''} onClick={() => filterEvents('Rejected')}>Rejected</li>
             <li>
               <Link to="/dashboard">Your Favorite Events</Link> 
             </li>
@@ -211,7 +189,6 @@ const SubDashboard = () => {
                   <th>Event Zip Code</th>
                   <th>Event Price</th>
                   <th>Approval Status</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -227,9 +204,6 @@ const SubDashboard = () => {
                     <td>{event.eventCityzip}</td>
                     <td>{event.eventPrice}</td>
                     <td>{event.approvalStatus}</td>
-                    <td>
-                      <button className="button-edit" onClick={() => toggleEditPopup(event)}>Edit/Resubmit</button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
