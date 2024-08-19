@@ -69,7 +69,6 @@ const SubDashboard = () => {
   
   const validateEditForm = () => {
     const errors = {};
-  
     if (!editEvent.eventName || editEvent.eventName.trim() === '') {
       errors.eventName = 'Event name is required.';
     }
@@ -95,9 +94,6 @@ const SubDashboard = () => {
     }
     if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
       errors.eventPrice = 'Event price must be a positive number.';
-    }
-    if (!editEvent.approvalStatus || editEvent.approvalStatus.trim() === '') {
-      errors.approvalStatus = 'Approval status is required.';
     }
   
     setEditErrors(errors);
@@ -153,19 +149,19 @@ const SubDashboard = () => {
       <header className="header">Dashboard
       </header>
       <div className="tiles-container">
-        <div className="tile all" onClick={() => this.filterEvents('All')}>
+        <div className="tile all" onClick={() => filterEvents('All')}>
           <h3>All</h3>
           <p>{allCount}</p>
         </div>
-        <div className="tile approved" onClick={() => this.filterEvents('Approved')}>
+        <div className="tile approved" onClick={() => filterEvents('Approved')}>
           <h3>Approved</h3>
           <p>{approvedCount}</p>
         </div>
-        <div className="tile pending" onClick={() => this.filterEvents('Pending')}>
+        <div className="tile pending" onClick={() => filterEvents('Pending')}>
           <h3>Pending</h3>
           <p>{pendingCount}</p>
         </div>
-        <div className="tile rejected" onClick={() => this.filterEvents('Rejected')}>
+        <div className="tile rejected" onClick={() => filterEvents('Rejected')}>
           <h3>Rejected</h3>
           <p>{rejectedCount}</p>
         </div>
@@ -174,10 +170,10 @@ const SubDashboard = () => {
       <div className="admin-dashboard">
         <aside className="sidebar">
           <ul>
-            <li className={filter === 'All' ? 'active' : ''} onClick={() => this.filterEvents('All')}>All</li>
-            <li className={filter === 'Approved' ? 'active' : ''} onClick={() => this.filterEvents('Approved')}>Approved</li>
-            <li className={filter === 'Pending' ? 'active' : ''} onClick={() => this.filterEvents('Pending')}>Pending</li>
-            <li className={filter === 'Rejected' ? 'active' : ''} onClick={() => this.filterEvents('Rejected')}>Rejected</li>
+            <li className={filter === 'All' ? 'active' : ''} onClick={() => filterEvents('All')}>All</li>
+            <li className={filter === 'Approved' ? 'active' : ''} onClick={() => filterEvents('Approved')}>Approved</li>
+            <li className={filter === 'Pending' ? 'active' : ''} onClick={() => filterEvents('Pending')}>Pending</li>
+            <li className={filter === 'Rejected' ? 'active' : ''} onClick={() => filterEvents('Rejected')}>Rejected</li>
             <li>
               <Link to="/dashboard">Your Favorite Events</Link> 
             </li>
@@ -186,7 +182,7 @@ const SubDashboard = () => {
             </li>
           </ul>
         </aside>        
-          {favorites.length > 0 ? (
+          {submissions.length > 0 ? (
             <main className="content">
             <table className="event-table">
               <thead>
@@ -220,7 +216,7 @@ const SubDashboard = () => {
                     <td>{event.eventPrice}</td>
                     <td>{event.approvalStatus}</td>
                     <td>
-                      <button className="button-edit" onClick={() => this.toggleEditPopup(event)}>Edit/Resubmit</button>
+                      <button className="button-edit" onClick={() => toggleEditPopup(event)}>Edit/Resubmit</button>
                     </td>
                   </tr>
                 ))}
