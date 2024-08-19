@@ -7,18 +7,7 @@ import '../styles/AdminDashboard.css';
 const SubDashboard = () => {
   const navigate = useNavigate();
   const { user, submissions, fetchSubmissions } = useAuth();
-  const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [filter, setFilter] = useState('All');
-  const [showEditPopup, setShowEditPopup] = useState(false);
-  const [editEvent, setEditEvent] = useState(null);
-  const [allCount, setAllCount] = useState(0);
-  const [approvedCount, setApprovedCount] = useState(0);
-  const [pendingCount, setPendingCount] = useState(0);
-  const [rejectedCount, setRejectedCount] = useState(0);
-  const [images, setImages] = useState({});
   const [error, setError] = useState(null);
-  const [editErrors, setEditErrors] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,19 +17,6 @@ const SubDashboard = () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions`);
         const event = response.data;
-        setEvents(event);
-        setFilteredEvents(event);
-  
-        const approvedCountC = event.filter(e => e.approvalStatus === 'Approved').length;
-        const pendingCountC = event.filter(e => e.approvalStatus === 'Pending').length;
-        const rejectedCountC = event.filter(e => e.approvalStatus === 'Rejected').length;
-        
-        setAllCount(event.length);
-        setApprovedCount(approvedCountC);
-        setPendingCount(pendingCountC);
-        setRejectedCount(rejectedCountC);
-        
-        event.forEach(e => fetchImage(e.id));
       } catch (error) {
         console.error('Error fetching data', error);
         setError('Error fetching data. Please try again later.');
@@ -61,77 +37,6 @@ const SubDashboard = () => {
         }
     };
 
-  const filterEvents = (status) => {
-    let filtered = events;
-    if (status !== 'All') {
-      filtered = events.filter(e => e.approvalStatus === status);
-    }
-    setFilteredEvents(filtered);
-    setFilter(status);
-  };
-  
-  const toggleEditPopup = (event) => {
-    setShowEditPopup(!showEditPopup);
-    setEditEvent(event);
-    setEditErrors({});
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditEvent(prev => ({ ...prev, [name]: value }));
-  };
-  
-  const validateEditForm = () => {
-    const errors = {};
-    if (!editEvent.eventName || editEvent.eventName.trim() === '') {
-      errors.eventName = 'Event name is required.';
-    }
-    if (!editEvent.description || editEvent.description.trim() === '') {
-      errors.description = 'Description is required.';
-    }
-    if (!editEvent.eventCategory || editEvent.eventCategory.trim() === '') {
-      errors.eventCategory = 'Event category is required.';
-    }
-    if (!editEvent.eventDate) {
-      errors.eventDate = 'Event date is required.';
-    }
-    if (!editEvent.eventTime) {
-      errors.eventTime = 'Event time is required.';
-    }
-    if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
-      errors.eventLocation = 'Event venue name is required.';
-    }
-    if (!editEvent.eventCityzip || editEvent.eventCityzip.trim() === '') {
-      errors.eventCityzip = 'Event zip code is required.';
-    } else if (!isValidZipCode(editEvent.eventCityzip)) {
-      errors.eventCityzip = 'Please enter a valid zip code from the St. Louis metro area.';
-    }
-    if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
-      errors.eventPrice = 'Event price must be a positive number.';
-    }
-  
-    setEditErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-  
-  const saveChanges = async () => {
-    if (!validateEditForm()) {
-      return;
-    }
-
-    try {
-        await axios.put(`http://localhost:8080/api/users/${userId}/submissions/${editEvent.id}`, JSON.stringify(editEvent), {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        toggleEditPopup(null);
-        fetchData();
-      } catch (error) {
-        console.error('Error updating the event:', error);
-      }
-    };
-
   const formatTime = (time) => {
     try {
       if (!Array.isArray(time) || time.length !== 2) {
@@ -145,16 +50,6 @@ const SubDashboard = () => {
     } catch (error) {
       console.error('Error formatting time:', error);
       return '';
-    }
-  };
-
-  const fetchImage = async (id) => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions/${id}/image`, { responseType: 'blob' });
-      const imageUrl = URL.createObjectURL(response.data);
-      setImages(prevImages => ({ ...prevImages, [id]: imageUrl }));
-    } catch (error) {
-      console.error('Error fetching image', error);
     }
   };
 
