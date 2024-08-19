@@ -7,12 +7,67 @@ import '../styles/AdminDashboard.css';
 const SubDashboard = () => {
   const navigate = useNavigate();
   const { user, submissions, fetchSubmissions } = useAuth();
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [filter, setFilter] = useState('All');
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [editEvent, setEditEvent] = useState(null);
+  const [allCount, setAllCount] = useState(0);
+  const [approvedCount, setApprovedCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [rejectedCount, setRejectedCount] = useState(0);
+  const [images, setImages] = useState({});
+  const [error, setError] = useState(null);
+  const [editErrors, setEditErrors] = useState({});
 
   useEffect(() => {
-    if (user) {
-      fetchSubmissions(user.id);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/users/${userId}/submissions');
+        const event = response.data;
+        setEvents(event);
+        setFilteredEvents(event);
+  
+        const approvedCountC = event.filter(e => e.approvalStatus === 'Approved').length;
+        const pendingCountC = event.filter(e => e.approvalStatus === 'Pending').length;
+        const rejectedCountC = event.filter(e => e.approvalStatus === 'Rejected').length;
+        
+        setAllCount(event.length);
+        setApprovedCount(approvedCountC);
+        setPendingCount(pendingCountC);
+        setRejectedCount(rejectedCountC);
+        
+        event.forEach(e => fetchImage(e.id));
+      } catch (error) {
+        console.error('Error fetching data', error);
+        setError('Error fetching data. Please try again later.');
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  const filterEvents = (status) => {
+    let filtered = events;
+    if (status !== 'All') {
+      filtered = events.filter(e => e.approvalStatus === status);
     }
-  }, [user]);
+    setFilteredEvents(filtered);
+    setFilter(status);
+  };
+  
+  const toggleEditPopup = (event) => {
+    setShowEditPopup(!showEditPopup);
+    setEditEvent(event);
+    setEditErrors({});
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditEvent(prev => ({ ...prev, [name]: value }));
+  };
+  
+    
 
   const formatTime = (time) => {
     try {
@@ -108,29 +163,6 @@ const SubDashboard = () => {
             <p>You have not submitted any events yet.</p>
           )}
       </div>
-      {showRsvpPopup && (
-        <div className="rsvp-popup">
-          <div className="rsvp-popup-content">
-            <h3>Change RSVP Status</h3>
-            <select
-              value={rsvpStatuses[showRsvpPopup] || 'none'}
-              onChange={(e) => handleRsvpUpdate(showRsvpPopup, e.target.value)}
-              className="form-select"
-            >
-              <option value="none">No RSVP</option>
-              <option value="attending">Attending</option>
-              <option value="not attending">Not Attending</option>
-              <option value="interested">Interested</option>
-            </select>
-            <button
-              onClick={() => setShowRsvpPopup(null)}
-              className="button-close"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

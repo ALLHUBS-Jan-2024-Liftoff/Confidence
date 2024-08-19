@@ -20,15 +20,16 @@ public class EventController {
 
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
-
     private final FavoriteEventRepository favoriteEventRepository;
-
+    private final SubmissionRepository submissionRepository;
     private final RSVPRepository rsvpRepository;
+
     @Autowired
-    public EventController(EventRepository eventRepository, UserRepository userRepository, FavoriteEventRepository favoriteEventRepository,RSVPRepository rsvpRepository) {
+    public EventController(EventRepository eventRepository, UserRepository userRepository, FavoriteEventRepository favoriteEventRepository,SubmissionRepository submissionRepository, RSVPRepository rsvpRepository) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.favoriteEventRepository = favoriteEventRepository;
+        this.submissionRepository = submissionRepository;
         this.rsvpRepository = rsvpRepository;
 
     }
