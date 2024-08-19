@@ -67,7 +67,60 @@ const SubDashboard = () => {
     setEditEvent(prev => ({ ...prev, [name]: value }));
   };
   
-    
+  const validateEditForm = () => {
+    const errors = {};
+  
+    if (!editEvent.eventName || editEvent.eventName.trim() === '') {
+      errors.eventName = 'Event name is required.';
+    }
+    if (!editEvent.description || editEvent.description.trim() === '') {
+      errors.description = 'Description is required.';
+    }
+    if (!editEvent.eventCategory || editEvent.eventCategory.trim() === '') {
+      errors.eventCategory = 'Event category is required.';
+    }
+    if (!editEvent.eventDate) {
+      errors.eventDate = 'Event date is required.';
+    }
+    if (!editEvent.eventTime) {
+      errors.eventTime = 'Event time is required.';
+    }
+    if (!editEvent.eventLocation || editEvent.eventLocation.trim() === '') {
+      errors.eventLocation = 'Event venue name is required.';
+    }
+    if (!editEvent.eventCityzip || editEvent.eventCityzip.trim() === '') {
+      errors.eventCityzip = 'Event zip code is required.';
+    } else if (!isValidZipCode(editEvent.eventCityzip)) {
+      errors.eventCityzip = 'Please enter a valid zip code from the St. Louis metro area.';
+    }
+    if (!editEvent.eventPrice || isNaN(editEvent.eventPrice) || editEvent.eventPrice <= 0) {
+      errors.eventPrice = 'Event price must be a positive number.';
+    }
+    if (!editEvent.approvalStatus || editEvent.approvalStatus.trim() === '') {
+      errors.approvalStatus = 'Approval status is required.';
+    }
+  
+    setEditErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+  
+  const saveChanges = async () => {
+    if (!validateEditForm()) {
+      return;
+    }
+
+    try {
+        await axios.put(`http://localhost:8080/api/users/${userId}/submissions/${editEvent.id}`, JSON.stringify(editEvent), {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        toggleEditPopup(null);
+        fetchData();
+      } catch (error) {
+        console.error('Error updating the event:', error);
+      }
+    };
 
   const formatTime = (time) => {
     try {
@@ -82,6 +135,16 @@ const SubDashboard = () => {
     } catch (error) {
       console.error('Error formatting time:', error);
       return '';
+    }
+  };
+
+  const fetchImage = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions/${id}/image`, { responseType: 'blob' });
+      const imageUrl = URL.createObjectURL(response.data);
+      setImages(prevImages => ({ ...prevImages, [id]: imageUrl }));
+    } catch (error) {
+      console.error('Error fetching image', error);
     }
   };
 
@@ -111,6 +174,10 @@ const SubDashboard = () => {
       <div className="admin-dashboard">
         <aside className="sidebar">
           <ul>
+            <li className={filter === 'All' ? 'active' : ''} onClick={() => this.filterEvents('All')}>All</li>
+            <li className={filter === 'Approved' ? 'active' : ''} onClick={() => this.filterEvents('Approved')}>Approved</li>
+            <li className={filter === 'Pending' ? 'active' : ''} onClick={() => this.filterEvents('Pending')}>Pending</li>
+            <li className={filter === 'Rejected' ? 'active' : ''} onClick={() => this.filterEvents('Rejected')}>Rejected</li>
             <li>
               <Link to="/dashboard">Your Favorite Events</Link> 
             </li>
