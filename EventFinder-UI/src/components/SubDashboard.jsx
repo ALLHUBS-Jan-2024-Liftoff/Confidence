@@ -23,7 +23,7 @@ const SubDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/users/${userId}/submissions');
+        const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions`);
         const event = response.data;
         setEvents(event);
         setFilteredEvents(event);
