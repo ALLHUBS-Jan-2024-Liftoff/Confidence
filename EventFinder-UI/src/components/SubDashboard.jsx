@@ -22,6 +22,9 @@ const SubDashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (user) {
+        loadSubmissions();
+      }
       try {
         const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions`);
         const event = response.data;
@@ -44,8 +47,19 @@ const SubDashboard = () => {
       }
     };
   
-    fetchData();
-  }, []);
+  }, [user]);
+
+      // Load user's submitted events
+      const loadSubmissions = async () => {
+        try {
+            const submissions = await fetchSubmissions(user.id);
+            const submittedEventIds = submissions.map(fav => fav.id);
+            setFavoriteEvents(submittedEventIds);
+        } catch (error) {
+            console.error('Error fetching favorite events:', error);
+            setSubmissions([]); // Ensure state is at least an empty array to prevent further errors
+        }
+    };
 
   const filterEvents = (status) => {
     let filtered = events;
@@ -187,7 +201,6 @@ const SubDashboard = () => {
             <table className="event-table">
               <thead>
                 <tr>
-                <tr>
                   <th>ID</th>
                   <th>Event Name</th>
                   <th>Description</th>
@@ -199,7 +212,6 @@ const SubDashboard = () => {
                   <th>Event Price</th>
                   <th>Approval Status</th>
                   <th>Actions</th>
-                </tr>
                 </tr>
               </thead>
               <tbody>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/CreateEvent.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 import STL_METRO_ZIPS from '../utilities/MetroZipCodes';
 
 const SubmitEvent = () => {
@@ -18,12 +19,25 @@ const SubmitEvent = () => {
     image: null,
   });
 
+  const [submittedEvents, setSubmittedEvents] = useState([]); // State to track user's favorite events
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { user, addSubmission } = useAuth();
+
+  const handleAddSubmission = async (eventId) => {
+    try {
+        await addSubmission(user.id, eventId);
+        setSubmittedEvents([...submittedEvents, eventId]); // Add the event ID to array
+
+    } catch (error) {
+        console.error('An error occurred while adding the event to submissions.', error);
+    }
+};
 
   const isValidZipCode = (zipCode) => {
     return STL_METRO_ZIPS.includes(zipCode);
   };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,11 +92,16 @@ const SubmitEvent = () => {
     formData.append('eventImage', state.image);
 
     try {
-      await axios.post('http://localhost:8080/api/admin/events', formData, {
+      const response = await axios.post('http://localhost:8080/api/admin/events', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      const eventId = response.data.id;
+      console.log(response.data);
+      await handleAddSubmission(eventId);
+
       navigate('/dashboard');
     } catch (error) {
       console.error('Error creating event', error);
