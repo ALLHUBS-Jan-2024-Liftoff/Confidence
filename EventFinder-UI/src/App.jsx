@@ -73,6 +73,7 @@ import Contact from './components/Contact';
 import Dashboard from './components/Dashboard';
 import CreateEvent from './components/CreateEvent';
 import Messages from './components/Messages';
+import SubDashboard from './components/SubDashboard';
 import SubmitEvent from './components/SubmitEvent'
 
 function ProtectedRoute({ children }) {
@@ -97,6 +98,7 @@ function App() {
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/submit-event" element={<SubmitEvent />} />
+          <Route path="/subdashboard" element={<SubDashboard />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

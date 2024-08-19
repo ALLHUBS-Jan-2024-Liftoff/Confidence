@@ -89,6 +89,9 @@ const Dashboard = () => {
             <li>
               <Link to="/submit-event">Submit Event</Link> 
             </li>
+            <li>
+              <Link to="/subdashboard">Your Event Submissions</Link> 
+            </li>
           </ul>
         </aside>        
           {favorites.length > 0 ? (

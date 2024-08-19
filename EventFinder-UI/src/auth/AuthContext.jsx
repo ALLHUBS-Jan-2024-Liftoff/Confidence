@@ -8,6 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
 
   const addFavorite = async (userId, eventId) => {
     try {
@@ -56,6 +57,43 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user, favorites.length]);
 
+  const addSubmission = async (userId, eventId) => {
+    try {
+        const response = await axios.post(`http://localhost:8080/api/users/${userId}/submissions/${eventId}`);
+        setSubmissions([...submissions, response.data]);
+    } catch (error) {
+        console.error('Error adding favorite', error);
+    }
+  };
+
+  const fetchSubmissions = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions`, {
+        headers: {
+          'Cache-Control': 'no-cache',  // Prevent caching
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        params: {
+          t: new Date().getTime()  // Add a timestamp to prevent caching
+        }
+      });
+
+      console.log('Fetched submissions:', response.data);
+
+      // Check if the response data is an array and set it to submissions
+      setSubmissions(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+      console.error('Error fetching submissions:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (user && submissions.length === 0) {
+      fetchSubmissions(user.id);
+    }
+  }, [user, submissions.length]);
+
   const fetchUser = async () => {
     try {
       const response = await axios.get('http://localhost:8080/user', { withCredentials: true });
@@ -85,7 +123,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAdmin, favorites, addFavorite, removeFavorite, fetchFavorites }}>
+    <AuthContext.Provider value={{ user, login, logout, isAdmin, favorites, addFavorite, removeFavorite, fetchFavorites, submissions, addSubmission, fetchSubmissions }}>
       {children}
     </AuthContext.Provider>
   );

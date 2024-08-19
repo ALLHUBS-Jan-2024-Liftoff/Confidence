@@ -50,6 +50,18 @@ public class UserService {
         }
     }
 
+    public void addSubmittedEvent(Integer userId, Long eventId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<Event> eventOpt = eventRepository.findById(eventId);
+
+        if (userOpt.isPresent() && eventOpt.isPresent()) {
+            User user = userOpt.get();
+            Event event = eventOpt.get();
+            user.getSubmittedEvents().add(event);
+            userRepository.save(user);
+        }
+    }
+
     public void removeFavoriteEvent(Integer userId, Long eventId) {
         Optional<User> userOpt = userRepository.findById(userId);
         Optional<Event> eventOpt = eventRepository.findById(eventId);
