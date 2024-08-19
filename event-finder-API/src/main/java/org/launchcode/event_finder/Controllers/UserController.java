@@ -4,12 +4,10 @@ package org.launchcode.event_finder.Controllers;
 
 import org.launchcode.event_finder.Models.Event;
 import org.launchcode.event_finder.Models.FavoriteEvent;
+import org.launchcode.event_finder.Models.SubmittedEvent;
 import org.launchcode.event_finder.Models.RSVP;
 import org.launchcode.event_finder.Models.User;
-import org.launchcode.event_finder.Repositories.EventRepository;
-import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
-import org.launchcode.event_finder.Repositories.RSVPRepository;
-import org.launchcode.event_finder.Repositories.UserRepository;
+import org.launchcode.event_finder.Repositories.*;
 import org.launchcode.event_finder.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,10 +37,14 @@ public class UserController {
     private FavoriteEventRepository favoriteEventRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserService userService, EventRepository eventRepository, FavoriteEventRepository favoriteEventRepository) {
+    private SubmissionRepository submissionRepository;
+
+    @Autowired
+    public UserController(UserRepository userRepository, UserService userService, EventRepository eventRepository, FavoriteEventRepository favoriteEventRepository, SubmissionRepository submissionRepository) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.favoriteEventRepository = favoriteEventRepository;
+        this.submissionRepository = submissionRepository;
         this.userService = userService;
 
     }

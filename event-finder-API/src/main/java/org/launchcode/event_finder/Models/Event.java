@@ -68,6 +68,10 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<FavoriteEvent> favoriteEvents = new HashSet<>();
 
+    // Define relationship with SubmittedEvent
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<SubmittedEvent> submittedEvents = new HashSet<>();
+
     // Define relationship with RSVP
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RSVP> rsvps = new HashSet<>();

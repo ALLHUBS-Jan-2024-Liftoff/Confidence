@@ -26,12 +26,19 @@ public class User extends AbstractEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
+
     private List<Event> favoriteEvents;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_submitted_events",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private List<Event> submittedEvents;
+
     public User() {
     }
-
-
-
 
     public User(String username, String password ) {
         this.username = username;
@@ -43,11 +50,9 @@ public class User extends AbstractEntity {
         return username;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public boolean isMatch(String password) {
         return encoder.matches(password, this.password); // Check if password matches the hashed password in the database (using BCrypt password);
@@ -67,6 +72,11 @@ public class User extends AbstractEntity {
 
     public void setFavoriteEvents(List<Event> favoriteEvents) {
         this.favoriteEvents = favoriteEvents;
+    }
+    public List<Event> getSubmittedEvents() { return submittedEvents; }
+
+    public void setSubmittedEvents(List<Event> submittedEvents) {
+        this.submittedEvents = submittedEvents;
     }
 }
 

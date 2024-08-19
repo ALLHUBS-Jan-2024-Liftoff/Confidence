@@ -4,9 +4,11 @@ import org.launchcode.event_finder.Models.DTO.LoginFormDTO;
 import org.launchcode.event_finder.Models.DTO.RegistrationFormDTO;
 import org.launchcode.event_finder.Models.Event;
 import org.launchcode.event_finder.Models.FavoriteEvent;
+import org.launchcode.event_finder.Models.SubmittedEvent;
 import org.launchcode.event_finder.Models.User;
 import org.launchcode.event_finder.Repositories.EventRepository;
 import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
+import org.launchcode.event_finder.Repositories.SubmissionRepository;
 import org.launchcode.event_finder.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class AuthController {
     @Autowired
     private FavoriteEventRepository favoriteEventRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SubmissionRepository submissionRepository;
 
     @Autowired
     public AuthController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {

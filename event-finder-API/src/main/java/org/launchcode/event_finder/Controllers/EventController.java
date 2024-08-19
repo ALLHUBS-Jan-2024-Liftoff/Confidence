@@ -2,10 +2,7 @@ package org.launchcode.event_finder.Controllers;
 
 import org.launchcode.event_finder.Models.RSVP;
 import org.launchcode.event_finder.Models.User;
-import org.launchcode.event_finder.Repositories.EventRepository;
-import org.launchcode.event_finder.Repositories.FavoriteEventRepository;
-import org.launchcode.event_finder.Repositories.RSVPRepository;
-import org.launchcode.event_finder.Repositories.UserRepository;
+import org.launchcode.event_finder.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.core.JdbcAggregateOperations;
 import org.springframework.http.HttpStatus;
@@ -28,7 +25,7 @@ public class EventController {
 
     private final RSVPRepository rsvpRepository;
     @Autowired
-    public EventController(EventRepository eventRepository, UserRepository userRepository, FavoriteEventRepository favoriteEventRepository, RSVPRepository rsvpRepository) {
+    public EventController(EventRepository eventRepository, UserRepository userRepository, FavoriteEventRepository favoriteEventRepository,RSVPRepository rsvpRepository) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.favoriteEventRepository = favoriteEventRepository;
