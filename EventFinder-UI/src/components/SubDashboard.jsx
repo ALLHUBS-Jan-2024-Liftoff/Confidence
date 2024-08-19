@@ -6,36 +6,27 @@ import '../styles/AdminDashboard.css';
 
 const SubDashboard = () => {
   const navigate = useNavigate();
-  const { user, submissions, fetchSubmissions } = useAuth();
+  const { user, fetchSubmissions } = useAuth();
+  const [submissions, setSubmissions] = useState([]);
   const [error, setError] = useState(null);
 
+  // Fetch submissions when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        loadSubmissions();
-      }
-      try {
-        const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions`);
-        const event = response.data;
-      } catch (error) {
-        console.error('Error fetching data', error);
-        setError('Error fetching data. Please try again later.');
-      }
-    };
-  
+    if (user) {
+      fetchSubmissionsData(user.id);
+    }
   }, [user]);
 
-      // Load user's submitted events
-      const loadSubmissions = async () => {
-        try {
-            const submissions = await fetchSubmissions(user.id);
-            const submittedEventIds = submissions.map(fav => fav.id);
-            setFavoriteEvents(submittedEventIds);
-        } catch (error) {
-            console.error('Error fetching favorite events:', error);
-            setSubmissions([]); // Ensure state is at least an empty array to prevent further errors
-        }
-    };
+  const fetchSubmissionsData = async (userId) => {
+    try {
+      // Fetch submissions for the logged-in user
+      const response = await axios.get(`http://localhost:8080/api/users/${userId}/submissions`);
+      setSubmissions(response.data); // Update state with fetched submissions
+    } catch (error) {
+      console.error('Error fetching data', error);
+      setError('Error fetching data. Please try again later.');
+    }
+  };
 
   const formatTime = (time) => {
     try {
@@ -55,22 +46,21 @@ const SubDashboard = () => {
 
   return (
     <div className="admin-dashboard-container">
-      <header className="header">Dashboard
-      </header>
+      <header className="header">Dashboard</header>
       <h2>Your Event Submissions</h2>
       <div className="admin-dashboard">
         <aside className="sidebar">
           <ul>
             <li>
-              <Link to="/dashboard">Your Favorite Events</Link> 
+              <Link to="/dashboard">Your Favorite Events</Link>
             </li>
             <li>
-              <Link to="/submit-event">Submit Event</Link> 
+              <Link to="/submit-event">Submit Event</Link>
             </li>
           </ul>
-        </aside>        
-          {submissions.length > 0 ? (
-            <main className="content">
+        </aside>
+        {submissions.length > 0 ? (
+          <main className="content">
             <table className="event-table">
               <thead>
                 <tr>
@@ -103,9 +93,10 @@ const SubDashboard = () => {
                 ))}
               </tbody>
             </table>
-            </main>) : (
-            <p>You have not submitted any events yet.</p>
-          )}
+          </main>
+        ) : (
+          <p>You have not submitted any events yet.</p>
+        )}
       </div>
     </div>
   );
