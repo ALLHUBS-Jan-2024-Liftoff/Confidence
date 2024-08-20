@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // If Bootstrap's CSS is loaded after your custom styles, it can override them.
 
@@ -14,9 +14,9 @@ const NavBar = () => {
           {user ? (
             <>
               {isAdmin() && (
-                <li className="nav-item"><a className="nav-link" href="/admin">Admin Dashboard</a></li>
+                <li className="nav-item"><Link className="nav-link" to="/admin">Admin Dashboard</Link></li>
               )}
-              <li className="nav-item"><a className="nav-link" href="/dashboard">Dashboard</a></li>
+              <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
               <li className="nav-item"><a className="nav-link" href="#logout" onClick={logout}>Logout</a></li>
             </>
           ) : (
