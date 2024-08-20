@@ -1,29 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import 'bootstrap/dist/css/bootstrap.min.css'; // If Bootstrap's CSS is loaded after your custom styles, it can override them.
 
 const NavBar = () => {
   const { user, logout, isAdmin } = useAuth();
 
   return (
-    <nav>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        {user ? (
-          <>
-            {isAdmin() && (
-              <li><Link to="/admin">Admin Dashboard</Link></li>
-            )}
-            <li><Link to="/dashboard">Dashboard</Link></li>
-            <li><a href="#logout" onClick={logout}>Logout</a></li>
-          </>
-        ) : (
-          <>
-            <li><Link to="/register">Register</Link></li>
-            <li><Link to="/login">Login</Link></li>
-          </>
-        )}
-      </ul>
+    <nav className="navbar navbar-expand-sm bg-light navbar-light">
+      <div className="container-fluid">
+        <ul className="navbar-nav">
+          <li className="nav-item"><a className="nav-link active" href="/">Home</a></li>
+          {user ? (
+            <>
+              {isAdmin() && (
+                <li className="nav-item"><a className="nav-link" href="/admin">Admin Dashboard</a></li>
+              )}
+              <li className="nav-item"><a className="nav-link" href="/dashboard">Dashboard</a></li>
+              <li className="nav-item"><a className="nav-link" href="#logout" onClick={logout}>Logout</a></li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item"><a className="nav-link" href="/register">Register</a></li>
+              <li className="nav-item"><a className="nav-link" href="/login">Login</a></li>
+            </>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 };
