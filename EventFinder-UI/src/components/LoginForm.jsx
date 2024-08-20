@@ -87,6 +87,12 @@ const LoginForm = () => {
 
   return (
     <div className="login-form-container">
+       <div className="d-flex justify-content-between mb-3">
+        <a href="/" className="btn btn-primary me-2">Home</a>
+        <a href="/contact" className="btn btn-primary me-2">Contact</a>
+        <a href="/about" className="btn btn-primary me-2">About</a>
+        <a href="/register" className="btn btn-primary">Register</a>
+      </div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <input type="text" name="username" placeholder="Username" onChange={handleChange} required />

@@ -9,10 +9,15 @@ const About = () => {
         <Col md={8}>
           <Card>
             <Card.Body>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <Link to="/" className="btn btn-primary">Home</Link>
+            {/* <Card.Title>About the Local Event Finder</Card.Title> */}
+            <h1>About Us</h1>
+              <div className="d-flex  mb-3">
+                <Link to="/" className="btn btn-primary me-2">Home</Link>
+                <Link to="/contact" className="btn btn-primary me-2">Contact</Link>
+                <Link to="/login" className="btn btn-secondary me-2">Login</Link>
+                <Link to="/register" className="btn btn-secondary me-2">Register</Link>
               </div>
-              <Card.Title>About the Local Event Finder</Card.Title>
+             
               <Card.Subtitle className="mb-3 text-muted">Meet *Celebrity Name*</Card.Subtitle>
               <Card.Text>
                 *Celebrity Name* is a celebrated figure in the St. Louis community, known for their extensive knowledge and passion for local events and culture. With a career spanning *number* years, *Celebrity Name* has shared their expertise through popular articles, books, guides, and media appearances. Their deep understanding of what makes St. Louis unique has made them a trusted voice for locals and visitors alike.

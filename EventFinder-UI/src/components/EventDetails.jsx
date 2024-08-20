@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/EventDetails.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const EventDetails = () => {
     const [showRsvpPopup, setShowRsvpPopup] = useState(null);
@@ -23,7 +25,7 @@ const EventDetails = () => {
     });
     const [rsvpStatuses, setRsvpStatuses] = useState({}); // State to manage RSVP status
     const { user, addFavorite, removeFavorite, } = useAuth(); // Get user and addFavorite from AuthContext
-
+   // const navigate = useNavigate();
     // Fetch data from API on initial component mount
     useEffect(() => {
         fetchData();
@@ -218,6 +220,14 @@ const EventDetails = () => {
         }
     };
 
+    
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    navigate('/'); // Redirect to home or another page after logout
+  };
+
     return (
         <div className='container py-5'>
             <div className='card shadow-sm'>
@@ -229,7 +239,19 @@ const EventDetails = () => {
                         <h1 className='text-primary'>Event Finder</h1>
                         <div className='mb-3'>
                             <Link to="/about" className="btn btn-primary me-2">About</Link>
-                            <Link to="/contact" className="btn btn-secondary">Contact</Link>
+                            <Link to="/contact" className="btn btn-secondary me-2">Contact</Link>
+                            {!user ? (
+                                <>
+                                    <Link to="/register" className="btn btn-success me-2">Register</Link>
+                                    <Link to="/login" className="btn btn-info">Login</Link>
+                                </>
+                            ) : (
+                                <>
+                               <Link to="/dashboard" className="btn btn-info me-2">Dashboard</Link>
+        
+                                <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                                </>
+                            )}
                         </div>
                         <input
                             type='text'

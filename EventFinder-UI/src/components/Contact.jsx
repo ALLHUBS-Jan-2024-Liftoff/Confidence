@@ -49,9 +49,14 @@ const Contact = () => {
         <Col md={8}>
           <Card>
             <Card.Body>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <Link to="/" className="btn btn-primary">Home</Link>
-                <h1>Contact Us</h1>
+              <h1>Contact Us</h1>
+              <div className="d-flex mb-3">
+                <Link to="/" className="btn btn-primary me-2">Home</Link>
+                <Link to="/about" className="btn btn-primary me-2">About</Link>
+                <Link to="/login" className="btn btn-secondary me-2">Login</Link>
+                <Link to="/register" className="btn btn-secondary">Register</Link>
+                
+                
               </div>
               <Card.Text>
                 We love hearing from you! Whether you have questions, suggestions, or just want to share your event experiences, feel free to reach out to us using the form below. Our team is here to assist you and ensure you have the best possible experience with Local Event Finder.
