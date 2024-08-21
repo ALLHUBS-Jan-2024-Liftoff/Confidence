@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Weather.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; // If Bootstrap's CSS is loaded after your custom styles, it can override them.
+import '../styles/Weather.css'; // Order of CSS Files: Ensure that your custom CSS file is loaded after Bootstrap’s CSS. 
 import { getWeather } from '../services/WeatherService';
 
 const Weather = () => {

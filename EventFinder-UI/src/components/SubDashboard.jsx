@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import axios from 'axios';
-import '../styles/AdminDashboard.css';
+import '../styles/Dashboard.css';
 
 const SubDashboard = () => {
   const navigate = useNavigate();
@@ -45,10 +45,10 @@ const SubDashboard = () => {
   };
 
   return (
-    <div className="admin-dashboard-container">
+    <div className="dashboard-container">
       <header className="header">Dashboard</header>
       <h2>Your Event Submissions</h2>
-      <div className="admin-dashboard">
+      <div className="dashboard">
         <aside className="sidebar">
           <ul>
             <li>

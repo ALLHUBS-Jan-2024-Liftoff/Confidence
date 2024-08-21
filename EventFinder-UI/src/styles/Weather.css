@@ -2,9 +2,9 @@
 /* Copied EventDetails to create - if modified, then change EventDetails to Weather, below */
 
 /* Adjust EventDetails card columns on medium screens */
-@media (min-width: 768px) {
+@media (max-width: 576px) {
     .card-columns {
-        column-count: 2;
+        column-count: 1;
     }
 }
 
